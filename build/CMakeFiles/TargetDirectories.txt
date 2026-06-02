@@ -1,8 +1,0 @@
-/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/CMakeFiles/edit_cache.dir
-/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/CMakeFiles/rebuild_cache.dir
-/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/engine/CMakeFiles/Engine.dir
-/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/engine/CMakeFiles/edit_cache.dir
-/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/engine/CMakeFiles/rebuild_cache.dir
-/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/game/CMakeFiles/My3DGame.dir
-/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/game/CMakeFiles/edit_cache.dir
-/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/game/CMakeFiles/rebuild_cache.dir

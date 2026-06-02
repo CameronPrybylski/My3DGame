@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/cmake_install.cmake",
-		"/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/engine/cmake_install.cmake",
-		"/Users/cameronprzybylski/Documents/C++/C++ Projects/My3DGame/build/game/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
