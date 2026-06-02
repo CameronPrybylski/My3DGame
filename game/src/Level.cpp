@@ -168,11 +168,11 @@ void Level::UpdateCamera(const Input& input, float dt)
     
     if(cameraRight)
     {
-        xOffset = 1.0f;
+        xOffset = -1.0f;
     }
     if(cameraLeft)
     {
-        xOffset = -1.0f;
+        xOffset = 1.0f;
     }
     if(cameraUp)
     {

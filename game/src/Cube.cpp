@@ -22,23 +22,23 @@ void Cube::OnEvent(const Input& input)
     {
         if(input.IsKeyDown("D"))
         {
-            rigidBody.velocity.z = sin(glm::radians(direction)) * 150.0f;
-            rigidBody.velocity.x = cos(glm::radians(direction)) * -150.0f;
+            rigidBody.velocity.z = sin(glm::radians(direction)) * 250.0f;
+            rigidBody.velocity.x = cos(glm::radians(direction)) * -250.0f;
         }
         else if(input.IsKeyDown("A"))
         {
-            rigidBody.velocity.z = sin(glm::radians(direction)) * -150.0f;
-            rigidBody.velocity.x = cos(glm::radians(direction)) * 150.0f;
+            rigidBody.velocity.z = sin(glm::radians(direction)) * -250.0f;
+            rigidBody.velocity.x = cos(glm::radians(direction)) * 250.0f;
         }
         else if(input.IsKeyDown("W"))
         {
-            rigidBody.velocity.z = cos(glm::radians(direction)) * 150.0f;
-            rigidBody.velocity.x = sin(glm::radians(direction)) * 150.0f;
+            rigidBody.velocity.z = cos(glm::radians(direction)) * 250.0f;
+            rigidBody.velocity.x = sin(glm::radians(direction)) * 250.0f;
         }
         else if(input.IsKeyDown("S"))
         {
-            rigidBody.velocity.z = cos(glm::radians(direction)) * -150.0f;
-            rigidBody.velocity.x = sin(glm::radians(direction)) * -150.0f;
+            rigidBody.velocity.z = cos(glm::radians(direction)) * -250.0f;
+            rigidBody.velocity.x = sin(glm::radians(direction)) * -250.0f;
         }
 
         if(!(input.IsKeyDown("W") || input.IsKeyDown("S") || input.IsKeyDown("A") || input.IsKeyDown("D")))
@@ -49,7 +49,7 @@ void Cube::OnEvent(const Input& input)
     
         if(input.IsKeyDown("SPACE"))
         {
-            rigidBody.velocity.y = 250.0f;
+            rigidBody.velocity.y = 350.0f;
         }
     }
     
