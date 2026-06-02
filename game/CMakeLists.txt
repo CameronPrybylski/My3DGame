@@ -4,6 +4,7 @@ project(My3DGame)
 add_executable(My3DGame
     src/Cube.cpp
     src/Level.cpp
+    src/Player.cpp
     src/main.cpp
     # Add your game source files here
 )

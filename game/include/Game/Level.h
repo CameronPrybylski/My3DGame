@@ -3,6 +3,7 @@
 #include <Engine/Scene/Scene.h>
 
 class Cube;
+class Player;
 
 class Level : public Scene {
 
@@ -23,7 +24,7 @@ public:
 
 private:
     std::string root;
-    std::shared_ptr<Cube> cube;
+    std::shared_ptr<Player> player;
     bool cameraRight = false;
     bool cameraLeft = false;
     bool cameraUp = false;

@@ -1,5 +1,6 @@
 #include <Game/Level.h>
 #include <Game/Cube.h>
+#include <Game/Player.h>
 
 Level::Level(float screenWidth, float screenHeight, std::string root) : Scene(screenWidth, screenHeight), root(root)
 {
@@ -22,14 +23,14 @@ void Level::LoadLevel()
     objectMap.clear();
 
     
-    cube = std::make_shared<Cube>("cube1");
-    cube->mainCh = true;
-    cube->color = glm::vec4{1.0f, 0.0f, 0.0f, 1.0f};
-    cube->transform.position += glm::vec3(150.0f, -100.0f, 0.0f);
-    cube->transform.scale = glm::vec3(50.0f, 50.0f, 50.0f);
-    cube->rigidBody.mass = 10.0f;
-    std::shared_ptr<GameObject> go = cube;
-    AddObject(cube->name, go);
+    player = std::make_shared<Player>("player");
+    player->mainCh = true;
+    player->color = glm::vec4{1.0f, 0.0f, 0.0f, 1.0f};
+    player->transform.position += glm::vec3(150.0f, -100.0f, 0.0f);
+    player->transform.scale = glm::vec3(50.0f, 50.0f, 50.0f);
+    player->rigidBody.mass = 10.0f;
+    std::shared_ptr<GameObject> go = player;
+    AddObject(player->name, go);
 
     std::shared_ptr<Cube> cube2 = std::make_shared<Cube>("cube2");
     cube2->rigidBody.mass = 2.0f;
@@ -50,8 +51,7 @@ void Level::LoadLevel()
     std::shared_ptr<GameObject> go4 = cube4;
     AddObject(cube4->name, go4);
 
-    camera.Create(0.0f, 1067.0f, 0.0f, 800.0f, -100.0f, 100.0f, 1000.0f, cube->transform.position);
-    //camera.SetCamera(cube->transform.position);
+    camera.Create(0.0f, 1067.0f, 0.0f, 800.0f, -100.0f, 100.0f, 1000.0f, player->transform.position);
 
     leftScreenEdge = 0.0f;
     rightScreenEdge = screenWidth;
@@ -191,7 +191,7 @@ void Level::UpdateCamera(const Input& input, float dt)
         changeDist = 10.0f;
     }
     //cameraPos += glm::vec3{0.0f, 0.0f, -500.0f};
-    camera.Update(cube->transform.position, xOffset, yOffset, changeDist);
-    cube->direction = camera.GetAngleAroundPlayer();
+    camera.Update(player->transform.position, xOffset, yOffset, changeDist);
+    player->direction = camera.GetAngleAroundPlayer();
     
 }
