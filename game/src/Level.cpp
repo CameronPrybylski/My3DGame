@@ -30,8 +30,11 @@ void Level::LoadLevel()
     std::shared_ptr<GameObject> gameObj = object;
     AddObject(object->name, gameObj);
     
-    objectLoader.LoadVertIndTex(root + "/res/tidus/High Poly Tidus.obj", root + "/res/tidus/High Poly Tidus.mtl");  
+    objectLoader.LoadVertIndTex(root + "/res/tidus/High Poly Tidus.obj", root + "/res/tidus/High Poly Tidus.mtl");
+    //objectLoader.LoadVertIndTex(root + "/res/crashbandicoot/crashbandicoot.obj", root + "/res/crashbandicoot/crashbandicoot.mtl");  
     std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes();
+
+    
     player = std::make_shared<Player>("player", submeshes, root + "/res/tidus/");
     
     player->SetMaterialMap(objectLoader.GetMaterialMap());
@@ -39,8 +42,24 @@ void Level::LoadLevel()
     player->transform.position += glm::vec3(150.0f, 300.0f, 0.0f);
     player->transform.scale = glm::vec3(300.0f, 300.0f, 300.0f);
     player->rigidBody.mass = 10.0f;
+    //player->transform.bottom = player->transform.position.y; //+ player->transform.scale.y / 2;
+    //player->transform.position.y = player->transform.position.y + (player->transform.scale.y / 2);
+    glm::vec3 posOffset = glm::vec3(0.0f, -1 * (player->transform.scale.y / 4), 0.0f);
+    player->SetPosOffSet(posOffset);
+    player->scaleMulti = 0.5f;
+    //playerPhysTransform = player->transform;
+    //playerPhysTransform.position.y += player->transform.scale.y / 2;
     std::shared_ptr<GameObject> go = player;
     AddObject(player->name, go);
+
+    std::shared_ptr<Cube> cube = std::make_shared<Cube>("cube");
+    cube->rigidBody.mass = 20.0f;
+    cube->transform.position = player->transform.position;
+    cube->transform.scale = player->transform.scale;
+    //cube->transform.bottom = cube->transform.position.y + cube->transform.scale.y / 2;
+    cube->color = glm::vec4(1.0f, 1.0f, 1.0f, 0.3f);
+    cube->transform.scale /= 2;
+    playerBox = cube;
 
     std::shared_ptr<Cube> cube2 = std::make_shared<Cube>("cube2");
     cube2->rigidBody.mass = 20.0f;
@@ -80,7 +99,7 @@ void Level::LoadPhysics(PhysicsSystem& physics)
     physics.SetGravity(gravity);
     for(auto& obj : objectMap)
     {
-        physics.RegisterBody(obj.second->transform, obj.second->rigidBody, obj.second->name);
+        physics.RegisterBody(obj.second->transform, obj.second->rigidBody, obj.second->name, obj.second->scaleMulti);
     }
 }
 
@@ -153,6 +172,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     {
         obj->Update(input, dt);
     }
+    playerBox->transform.position = player->transform.position;
     UpdateCamera(input, dt);
 
 }
@@ -163,6 +183,7 @@ void Level::DrawObjects(Renderer& renderer)
     {
         obj->Render(renderer, camera);
     }
+    playerBox->Render(renderer, camera);
 }
 
 void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)

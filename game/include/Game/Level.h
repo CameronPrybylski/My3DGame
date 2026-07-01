@@ -32,5 +32,7 @@ private:
     bool cameraTowards = false;
     bool cameraAway = false;
     float angle = 0.0f;
+    std::shared_ptr<Cube> playerBox;
+    Transform playerPhysTransform;
 
 };

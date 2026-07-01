@@ -101,11 +101,17 @@ void Player::Update(const Input& input, float dt)
 
 void Player::Render(Renderer& renderer, const Camera& camera)
 {
+    glm::vec3 oldPos = transform.position;
+    transform.position += posOffset;
+    glm::vec3 oldScale = transform.scale;
+    transform.scale /= scaleMulti;
     for(int i = 0; i < submeshes.size(); ++i)
     {
         std::shared_ptr<Mesh> submesh = submeshes[i];
         renderer.DrawTextureCube(*submesh, transform, camera, AssetManager::GetShader(shaderName), texturesMap[submesh->material->GetName()], color);
     }
+    transform.position = oldPos;
+    transform.scale = oldScale;
 }
 
 void Player::SetVertInd(std::vector<float> vert, std::vector<unsigned int> ind)

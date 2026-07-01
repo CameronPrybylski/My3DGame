@@ -23,6 +23,8 @@ public:
 
     void SetSubMeshes(std::vector<std::shared_ptr<Mesh>> submeshes){this->submeshes = submeshes;}
 
+    void SetPosOffSet(glm::vec3 posOffset){this->posOffset = posOffset;}
+
 private:
     bool rotatingCounter = false;
     bool roatatingClock = false;
@@ -31,6 +33,8 @@ private:
     std::map<std::string, Texture> texturesMap;
     std::vector<std::shared_ptr<Mesh>> submeshes;
     std::string texturesFilePath;
+
+    glm::vec3 posOffset = glm::vec3(0.0f, 0.0f, 0.0f);
 
     float direction = 0.0f;
     int jumps = 0;
