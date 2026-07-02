@@ -13,7 +13,7 @@ Player::Player(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, s
     transform.scale = glm::vec3(10.0f, 10.0f, 10.0f);
     rigidBody.isStatic = false;
     rigidBody.mass = 1.0f;
-    this->color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    this->color = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
     this->name = name;
     this->texturesFilePath = texturesFilePath;
 }
@@ -97,21 +97,17 @@ void Player::Update(const Input& input, float dt)
     {
         //transform.rotation.y += 10.0f;
     }
+    GameObject::Update(input, dt);
 }
 
 void Player::Render(Renderer& renderer, const Camera& camera)
 {
-    glm::vec3 oldPos = transform.position;
-    transform.position += posOffset;
-    glm::vec3 oldScale = transform.scale;
-    transform.scale /= scaleMulti;
     for(int i = 0; i < submeshes.size(); ++i)
     {
         std::shared_ptr<Mesh> submesh = submeshes[i];
         renderer.DrawTextureCube(*submesh, transform, camera, AssetManager::GetShader(shaderName), texturesMap[submesh->material->GetName()], color);
     }
-    transform.position = oldPos;
-    transform.scale = oldScale;
+    GameObject::Render(renderer, camera);
 }
 
 void Player::SetVertInd(std::vector<float> vert, std::vector<unsigned int> ind)

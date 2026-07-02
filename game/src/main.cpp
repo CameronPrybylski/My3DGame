@@ -26,7 +26,7 @@ int main()
         AssetManager::LoadMesh("cubeMesh", cubeMesh);
         
         //Scene scene;
-        std::shared_ptr<Level> level = std::make_shared<Level>(1067.0f, 800.0f, std::string(root));
+        std::shared_ptr<Level> level = std::make_shared<Level>(1067.0f, 800.0f, std::string(root), "/levels/testlevel.json");
 
         app.AddScene("level", level);
         app.SetScene("level");

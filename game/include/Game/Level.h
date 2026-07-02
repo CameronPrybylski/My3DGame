@@ -8,7 +8,7 @@ class Player;
 class Level : public Scene {
 
 public:
-    Level(float screenWidth, float screenHeight, std::string root);
+    Level(float screenWidth, float screenHeight, std::string root, std::string loadFilePath);
     ~Level();
 
     void Init() override;
@@ -24,6 +24,7 @@ public:
 
 private:
     std::string root;
+    std::string loadFilePath;
     std::shared_ptr<Player> player;
     bool cameraRight = false;
     bool cameraLeft = false;
@@ -32,7 +33,5 @@ private:
     bool cameraTowards = false;
     bool cameraAway = false;
     float angle = 0.0f;
-    std::shared_ptr<Cube> playerBox;
-    Transform playerPhysTransform;
 
 };

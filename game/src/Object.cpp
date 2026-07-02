@@ -24,11 +24,13 @@ void Object::OnEvent(const Input& input)
 
 void Object::Update(const Input& input, float dt)
 {
+    GameObject::Update(input, dt);
 }
 
 void Object::Render(Renderer& renderer, const Camera& camera)
 {
     renderer.DrawCube(*mesh, transform, camera, AssetManager::GetShader(shaderName), color);
+    GameObject::Render(renderer, camera);
 }
 
 void Object::SetVertInd(std::vector<float> vert, std::vector<unsigned int> ind)

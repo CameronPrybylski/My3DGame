@@ -3,7 +3,7 @@
 #include <Game/Player.h>
 #include <Game/Object.h>
 
-Level::Level(float screenWidth, float screenHeight, std::string root) : Scene(screenWidth, screenHeight), root(root)
+Level::Level(float screenWidth, float screenHeight, std::string root, std::string loadFilePath) : Scene(screenWidth, screenHeight), root(root), loadFilePath(loadFilePath)
 {
     Init();
 }
@@ -23,63 +23,58 @@ void Level::LoadLevel()
     objectList.clear();
     objectMap.clear();
 
-    objectLoader.LoadVertInd(root + "/res/teapot.obj");
-    std::vector<unsigned int> indecies = objectLoader.GetIndecies();
-    std::vector<float> vertices = objectLoader.GetVertexPos();
-    std::shared_ptr<Object> object = std::make_shared<Object>("object", vertices, indecies);
-    std::shared_ptr<GameObject> gameObj = object;
-    AddObject(object->name, gameObj);
-    
-    objectLoader.LoadVertIndTex(root + "/res/tidus/High Poly Tidus.obj", root + "/res/tidus/High Poly Tidus.mtl");
-    //objectLoader.LoadVertIndTex(root + "/res/crashbandicoot/crashbandicoot.obj", root + "/res/crashbandicoot/crashbandicoot.mtl");  
-    std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes();
+    std::ifstream file(root + loadFilePath);
+    if(!file.is_open())
+    {
+        std::cerr << "Error loading level file" << std::endl;
+    }
 
-    
-    player = std::make_shared<Player>("player", submeshes, root + "/res/tidus/");
-    
-    player->SetMaterialMap(objectLoader.GetMaterialMap());
-    player->color = glm::vec4{0.0f, 0.0f, 0.0f, 0.0f};
-    player->transform.position += glm::vec3(150.0f, 300.0f, 0.0f);
-    player->transform.scale = glm::vec3(300.0f, 300.0f, 300.0f);
-    player->rigidBody.mass = 10.0f;
-    //player->transform.bottom = player->transform.position.y; //+ player->transform.scale.y / 2;
-    //player->transform.position.y = player->transform.position.y + (player->transform.scale.y / 2);
-    glm::vec3 posOffset = glm::vec3(0.0f, -1 * (player->transform.scale.y / 4), 0.0f);
-    player->SetPosOffSet(posOffset);
-    player->scaleMulti = 0.5f;
-    //playerPhysTransform = player->transform;
-    //playerPhysTransform.position.y += player->transform.scale.y / 2;
-    std::shared_ptr<GameObject> go = player;
-    AddObject(player->name, go);
-
-    std::shared_ptr<Cube> cube = std::make_shared<Cube>("cube");
-    cube->rigidBody.mass = 20.0f;
-    cube->transform.position = player->transform.position;
-    cube->transform.scale = player->transform.scale;
-    //cube->transform.bottom = cube->transform.position.y + cube->transform.scale.y / 2;
-    cube->color = glm::vec4(1.0f, 1.0f, 1.0f, 0.3f);
-    cube->transform.scale /= 2;
-    playerBox = cube;
-
-    std::shared_ptr<Cube> cube2 = std::make_shared<Cube>("cube2");
-    cube2->rigidBody.mass = 20.0f;
-    std::shared_ptr<GameObject> go2 = cube2;
-    AddObject(cube2->name, go2);
-
-    std::shared_ptr<Cube> cube3 = std::make_shared<Cube>("cube3");
-    cube3->transform.position += glm::vec3(0.0f, 150.0f, 0.0f);
-    cube3->rigidBody.mass = 15.0f;
-    std::shared_ptr<GameObject> go3 = cube3;
-    AddObject(cube3->name, go3);
-
-    std::shared_ptr<Cube> cube4 = std::make_shared<Cube>("cube4");
-    cube4->transform.position += glm::vec3(0.0f, -150.0f, 0.0f);
-    cube4->transform.scale = glm::vec3(3000.0f, 10.0f, 3000.0f);
-    cube4->color = glm::vec4{0.0f, 0.7f, 0.4f, 1.0f};
-    cube4->rigidBody.isStatic = true;
-    cube4->rigidBody.mass = 100.0f;
-    std::shared_ptr<GameObject> go4 = cube4;
-    AddObject(cube4->name, go4);
+    nlohmann::json j;
+    file >> j;
+    for(auto items : j.items())
+    {
+        for(auto obj : items.value())
+        {
+            if(obj["texturesFilePath"] == "" && obj["type"] == "object")
+            {
+                std::string filePath = root + std::string(obj["obj"]);
+                objectLoader.LoadVertInd(root + std::string(obj["obj"]));
+                std::vector<unsigned int> indecies = objectLoader.GetIndecies();
+                std::vector<float> vertices = objectLoader.GetVertexPos();
+                std::shared_ptr<Object> object = std::make_shared<Object>(std::string(obj["name"]), vertices, indecies);
+                std::shared_ptr<GameObject> gameObj = object;
+                AddObject(object->name, gameObj);
+            }
+            else if(obj["texturesFilePath"] != "")
+            {
+                objectLoader.LoadVertIndTex(root + std::string(obj["obj"]), root + std::string(obj["mtl"]));
+                //objectLoader.LoadVertIndTex(root + "/res/crashbandicoot/crashbandicoot.obj", root + "/res/crashbandicoot/crashbandicoot.mtl");  
+                std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes();
+                player = std::make_shared<Player>(obj["name"], submeshes, root + std::string(obj["texturesFilePath"]));                
+                player->SetMaterialMap(objectLoader.GetMaterialMap());
+                player->color = glm::vec4{obj["color"][0], obj["color"][1], obj["color"][2], obj["color"][3]};
+                player->transform.position = glm::vec3{obj["position"][0], obj["position"][1], obj["position"][2]};
+                player->transform.scale = glm::vec3{obj["scale"][0], obj["scale"][1], obj["scale"][2]};
+                player->rigidBody.mass = obj["mass"];
+                glm::vec3 posOffset = glm::vec3{obj["posOffset"][0], obj["posOffset"][1], obj["posOffset"][2]};
+                player->SetRendPosOffSet(posOffset);
+                player->scaleMulti = obj["scaleMulti"];
+                std::shared_ptr<GameObject> go = player;
+                AddObject(player->name, go);
+            }
+            else if(obj["type"] == "cube")
+            {
+                std::shared_ptr<Cube> cube = std::make_shared<Cube>(obj["name"]);
+                cube->transform.position = glm::vec3{obj["position"][0], obj["position"][1], obj["position"][2]};
+                cube->transform.scale = glm::vec3{obj["scale"][0], obj["scale"][1], obj["scale"][2]};
+                cube->color = glm::vec4{obj["color"][0], obj["color"][1], obj["color"][2], obj["color"][3]};
+                cube->rigidBody.isStatic = obj["isStatic"];
+                cube->rigidBody.mass = obj["mass"];
+                std::shared_ptr<GameObject> go = cube;
+                AddObject(cube->name, go);
+            }
+        }
+    }
 
     camera.Create(0.0f, 1067.0f, 0.0f, 800.0f, -100.0f, 100.0f, 1000.0f, player->transform.position);
 
@@ -167,12 +162,10 @@ void Level::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
 {
     std::vector<CollisionEvent> collisions = physics.Update(dt);
     OnCollision(collisions, dt);
-
     for(auto& obj : objectList)
     {
         obj->Update(input, dt);
     }
-    playerBox->transform.position = player->transform.position;
     UpdateCamera(input, dt);
 
 }
@@ -183,7 +176,6 @@ void Level::DrawObjects(Renderer& renderer)
     {
         obj->Render(renderer, camera);
     }
-    playerBox->Render(renderer, camera);
 }
 
 void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
