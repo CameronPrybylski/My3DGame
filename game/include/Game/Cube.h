@@ -5,7 +5,7 @@
 class Cube : public GameObject
 {
 public:
-    Cube(std::string name);
+    Cube(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, float mass, bool isStatic);
     ~Cube();
 
 

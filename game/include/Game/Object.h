@@ -5,7 +5,8 @@
 class Object : public GameObject
 {
 public:
-    Object(std::string name, std::vector<float> vert, std::vector<unsigned int> ind);
+    Object(std::string name, std::vector<float> vert, std::vector<unsigned int> ind, glm::vec3 position, 
+        glm::vec3 scale, glm::vec4 color, float mass, bool isStatic);
     ~Object();
 
 

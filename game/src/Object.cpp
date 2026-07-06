@@ -1,16 +1,17 @@
 #include <Game/Object.h>
 
 
-Object::Object(std::string name, std::vector<float> vert, std::vector<unsigned int> ind)
+Object::Object(std::string name, std::vector<float> vert, std::vector<unsigned int> ind, glm::vec3 position, 
+        glm::vec3 scale, glm::vec4 color, float mass, bool isStatic)
 {
     mesh = std::make_shared<ObjectMesh>();
     mesh->SetVertInd(vert, ind);
     shaderName = "objectShader";
-    transform.position = glm::vec3(1000.0f, 500.0f, 10.0f);
-    transform.scale = glm::vec3(50.0f, 50.0f, 50.0f);
-    rigidBody.isStatic = false;
-    rigidBody.mass = 1.0f;
-    this->color = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+    transform.position = position;
+    transform.scale = scale;
+    rigidBody.isStatic = isStatic;
+    rigidBody.mass = mass;
+    this->color = color;
     this->name = name;
 }
 

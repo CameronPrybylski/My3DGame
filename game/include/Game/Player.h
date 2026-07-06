@@ -8,7 +8,8 @@ class Texture3D;
 class Player : public GameObject
 {
 public:
-    Player(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath);
+    Player(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, glm::vec3 position, 
+        glm::vec3 scale, glm::vec4 color, float mass, bool isStatic);
     ~Player();
 
 

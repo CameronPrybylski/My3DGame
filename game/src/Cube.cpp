@@ -1,14 +1,14 @@
 #include <Game/Cube.h>
 
-Cube::Cube(std::string name)
+Cube::Cube(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, float mass, bool isStatic)
 {
     mesh = AssetManager::GetMesh("cubeMesh");
     shaderName = "objectShader";
-    transform.position = glm::vec3(500.0f, 500.0f, 10.0f);
-    transform.scale = glm::vec3(100.0f, 100.0f, 100.0f);
-    rigidBody.isStatic = false;
-    rigidBody.mass = 1.0f;
-    this->color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    transform.position = position;
+    transform.scale = scale;
+    rigidBody.isStatic = isStatic;
+    rigidBody.mass = mass;
+    this->color = color;
     this->name = name;
 }
 
