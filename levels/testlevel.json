@@ -39,6 +39,8 @@
             "scale" : [100.0, 100.0, 100.0],
             "color" : [1.0, 1.0, 1.0, 1.0],
             "mass" : 20.0,
+            "posOffset" : [0.0, 0.0, 0.0],
+            "scaleMulti" : 1.0,
             "isStatic" : false
         },
         {
@@ -51,6 +53,8 @@
             "scale" : [100.0, 100.0, 100.0],
             "color" : [1.0, 1.0, 1.0, 1.0],
             "mass" : 15.0,
+            "posOffset" : [0.0, 0.0, 0.0],
+            "scaleMulti" : 1.0,
             "isStatic" : false
         },
         {
@@ -63,6 +67,8 @@
             "scale" : [3000.0, 10.0, 3000.0],
             "color" : [0.0, 0.7, 0.4, 1.0],
             "mass" : 100.0,
+            "posOffset" : [0.0, 0.0, 0.0],
+            "scaleMulti" : 1.0,
             "isStatic" : true
         }
     ]

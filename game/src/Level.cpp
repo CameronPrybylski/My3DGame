@@ -35,11 +35,14 @@ void Level::LoadLevel()
     {
         for(auto obj : items.value())
         {
+            std::string name = obj["name"];
             glm::vec3 position = glm::vec3{obj["position"][0], obj["position"][1], obj["position"][2]};
             glm::vec3 scale = glm::vec3{obj["scale"][0], obj["scale"][1], obj["scale"][2]};
             glm::vec4 color = glm::vec4{obj["color"][0], obj["color"][1], obj["color"][2], obj["color"][3]};
             bool isStatic = obj["isStatic"];
             float mass = obj["mass"];
+            glm::vec3 posOffset = glm::vec3{obj["posOffset"][0], obj["posOffset"][1], obj["posOffset"][2]};
+            float scaleMulti = obj["scaleMulti"];
             std::shared_ptr<GameObject> gameObj;
             if(obj["texturesFilePath"] == "" && obj["type"] == "object")
             {
@@ -47,29 +50,26 @@ void Level::LoadLevel()
                 objectLoader.LoadVertInd(root + std::string(obj["obj"]));
                 std::vector<unsigned int> indecies = objectLoader.GetIndecies();
                 std::vector<float> vertices = objectLoader.GetVertexPos();
-                std::shared_ptr<Object> object = std::make_shared<Object>(std::string(obj["name"]), vertices, indecies, position, scale, color, mass, isStatic);
-                std::shared_ptr<GameObject> gameObj = object;
-                AddObject(object->name, gameObj);
+                std::shared_ptr<Object> object = std::make_shared<Object>(name, vertices, indecies, position, scale, color, mass, isStatic);
+                gameObj = object;
             }
             else if(obj["texturesFilePath"] != "")
             {
                 objectLoader.LoadVertIndTex(root + std::string(obj["obj"]), root + std::string(obj["mtl"]));
                 //objectLoader.LoadVertIndTex(root + "/res/crashbandicoot/crashbandicoot.obj", root + "/res/crashbandicoot/crashbandicoot.mtl");  
                 std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes();
-                player = std::make_shared<Player>(obj["name"], submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic);                
+                player = std::make_shared<Player>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic);                
                 player->SetMaterialMap(objectLoader.GetMaterialMap());
-                glm::vec3 posOffset = glm::vec3{obj["posOffset"][0], obj["posOffset"][1], obj["posOffset"][2]};
                 player->SetRendPosOffSet(posOffset);
-                player->scaleMulti = obj["scaleMulti"];
-                std::shared_ptr<GameObject> go = player;
-                AddObject(player->name, go);
+                player->scaleMulti = scaleMulti;
+                gameObj = player;
             }
             else if(obj["type"] == "cube")
             {
-                std::shared_ptr<Cube> cube = std::make_shared<Cube>(obj["name"], position, scale, color, mass, isStatic);
-                std::shared_ptr<GameObject> go = cube;
-                AddObject(cube->name, go);
+                std::shared_ptr<Cube> cube = std::make_shared<Cube>(name, position, scale, color, mass, isStatic);
+                gameObj = cube;
             }
+            AddObject(name, gameObj);
         }
     }
 
