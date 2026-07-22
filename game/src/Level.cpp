@@ -46,6 +46,11 @@ void Level::LoadLevel()
                 float mass = obj["mass"];
                 glm::vec3 posOffset = glm::vec3{obj["posOffset"][0], obj["posOffset"][1], obj["posOffset"][2]};
                 float scaleMulti = obj["scaleMulti"];
+
+                glm::vec3 hitBoxScaleMulti = glm::vec3(1.0f, 1.0f, 1.0f);
+                if(obj.contains("hitBoxScaleMulti"))
+                    hitBoxScaleMulti = glm::vec3(obj["hitBoxScaleMulti"][0], obj["hitBoxScaleMulti"][1], obj["hitBoxScaleMulti"][2]);
+                glm::vec3 hitBoxScale = glm::vec3(scale.x * hitBoxScaleMulti.x, scale.y * hitBoxScaleMulti.y, scale.z * hitBoxScaleMulti.z);
                 std::shared_ptr<GameObject> gameObj;
                 if(obj["texturesFilePath"] == "" && obj["type"] == "object")
                 {
@@ -63,10 +68,9 @@ void Level::LoadLevel()
                     //"obj" : "/res/tidus/High Poly Tidus.obj",
                     //"mtl" : "/res/tidus/High Poly Tidus.mtl", 
                     std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes();
-                    player = std::make_shared<Player>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic);                
+                    player = std::make_shared<Player>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic);
                     player->SetMaterialMap(objectLoader.GetMaterialMap());
                     player->SetRendPosOffSet(posOffset);
-                    player->scaleMulti = scaleMulti;
                     gameObj = player;
                 }
                 else if(obj["type"] == "cube")
@@ -74,10 +78,8 @@ void Level::LoadLevel()
                     std::shared_ptr<Cube> cube = std::make_shared<Cube>(name, position, scale, color, mass, isStatic);
                     gameObj = cube;
                 }
-                else if(obj["type"] == "camera")
-                {
-                    camera.Create(0.0f, 1067.0f, 0.0f, 800.0f, 0.1f, 3000.0f, 1000.0f, player->transform.position);
-                }
+                gameObj->hitBox.scale = hitBoxScale;
+                gameObj->scaleMulti = scaleMulti;
                 AddObject(name, gameObj);
             }
             else if(item.key() == "levelParams")
@@ -90,8 +92,9 @@ void Level::LoadLevel()
             }
         }
     }
+    glm::vec3 playerCubeScale = glm::vec3(player->transform.scale.x * 0.125f, player->transform.scale.y * 0.5f, player->transform.scale.z * 0.125f);
 
-
+    playerCube = std::make_shared<Cube>("cubePlayer", player->transform.position, playerCubeScale, glm::vec4(1.0f, 1.0f, 1.0f, 0.3f), 1.0f, false);
     leftScreenEdge = 0.0f;
     rightScreenEdge = screenWidth;
     bottomScreenEdge = 0.0f;
@@ -108,7 +111,7 @@ void Level::LoadPhysics(PhysicsSystem& physics)
     physics.SetGravity(gravity);
     for(auto& obj : objectMap)
     {
-        physics.RegisterBody(obj.second->transform, obj.second->rigidBody, obj.second->name, obj.second->scaleMulti);
+        physics.RegisterBody(obj.second->hitBox, obj.second->rigidBody, obj.second->name, obj.second->scaleMulti);
     }
 }
 
@@ -180,6 +183,10 @@ void Level::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     {
         obj->Update(input, dt);
     }
+    playerCube->transform.position = player->transform.position;
+    playerCube->hitBox.position = player->hitBox.position;
+    playerCube->transform.position.y += 75.0f;
+    playerCube->Update(input, dt);
     UpdateCamera(input, dt);
 
 }
@@ -190,6 +197,7 @@ void Level::DrawObjects(Renderer& renderer)
     {
         obj->Render(renderer, camera);
     }
+    playerCube->Render(renderer, camera);
 }
 
 void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)

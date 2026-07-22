@@ -26,6 +26,7 @@ private:
     std::string root;
     std::string loadFilePath;
     std::shared_ptr<Player> player;
+    std::shared_ptr<Cube> playerCube;
     bool cameraRight = false;
     bool cameraLeft = false;
     bool cameraUp = false;

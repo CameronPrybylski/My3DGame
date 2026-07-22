@@ -11,6 +11,7 @@ Object::Object(std::string name, std::vector<float> vert, std::vector<unsigned i
     transform.scale = scale;
     rigidBody.isStatic = isStatic;
     rigidBody.mass = mass;
+    hitBox = transform;
     this->color = color;
     this->name = name;
 }

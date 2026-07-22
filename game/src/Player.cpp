@@ -14,6 +14,7 @@ Player::Player(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, s
     transform.scale = scale;
     rigidBody.isStatic = isStatic;
     rigidBody.mass = mass;
+    hitBox = transform;
     this->color = color;
     this->name = name;
     this->texturesFilePath = texturesFilePath;

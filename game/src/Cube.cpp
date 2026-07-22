@@ -8,6 +8,7 @@ Cube::Cube(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 colo
     transform.scale = scale;
     rigidBody.isStatic = isStatic;
     rigidBody.mass = mass;
+    hitBox = transform;
     this->color = color;
     this->name = name;
 }
