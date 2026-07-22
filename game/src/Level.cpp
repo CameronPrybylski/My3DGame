@@ -45,7 +45,6 @@ void Level::LoadLevel()
                 bool isStatic = obj["isStatic"];
                 float mass = obj["mass"];
                 glm::vec3 posOffset = glm::vec3{obj["posOffset"][0], obj["posOffset"][1], obj["posOffset"][2]};
-                float scaleMulti = obj["scaleMulti"];
 
                 glm::vec3 hitBoxScaleMulti = glm::vec3(1.0f, 1.0f, 1.0f);
                 if(obj.contains("hitBoxScaleMulti"))
@@ -79,7 +78,6 @@ void Level::LoadLevel()
                     gameObj = cube;
                 }
                 gameObj->hitBox.scale = hitBoxScale;
-                gameObj->scaleMulti = scaleMulti;
                 AddObject(name, gameObj);
             }
             else if(item.key() == "levelParams")
@@ -111,7 +109,7 @@ void Level::LoadPhysics(PhysicsSystem& physics)
     physics.SetGravity(gravity);
     for(auto& obj : objectMap)
     {
-        physics.RegisterBody(obj.second->hitBox, obj.second->rigidBody, obj.second->name, obj.second->scaleMulti);
+        physics.RegisterBody(obj.second->hitBox, obj.second->rigidBody, obj.second->name);
     }
 }
 

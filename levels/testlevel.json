@@ -12,7 +12,6 @@
             "color" : [0.0, 0.0, 1.0, 1.0],
             "mass" : 1.0,
             "posOffset" : [0.0, -37.5, 0.0],
-            "scaleMulti" : 1.0,
             "isStatic" : false
         },
         {
@@ -27,7 +26,6 @@
             "color" : [0.0, 0.0, 0.0, 0.0],
             "mass" : 10.0,
             "posOffset" : [0.0, -75.0, 0.0],
-            "scaleMulti" : 1.0,
             "isStatic" : false
         },
         {
@@ -41,7 +39,6 @@
             "color" : [1.0, 1.0, 1.0, 1.0],
             "mass" : 20.0,
             "posOffset" : [0.0, 0.0, 0.0],
-            "scaleMulti" : 1.0,
             "isStatic" : false
         },
         {
@@ -55,7 +52,6 @@
             "color" : [1.0, 0.0, 0.0, 1.0],
             "mass" : 15.0,
             "posOffset" : [0.0, 0.0, 0.0],
-            "scaleMulti" : 1.0,
             "isStatic" : false
         },
         {
@@ -69,7 +65,6 @@
             "color" : [0.0, 0.7, 0.4, 1.0],
             "mass" : 100.0,
             "posOffset" : [0.0, 0.0, 0.0],
-            "scaleMulti" : 1.0,
             "isStatic" : true
         },
         {
@@ -83,7 +78,6 @@
             "color" : [1.0, 0.0, 0.0, 1.0],
             "mass" : 15.0,
             "posOffset" : [0.0, 0.0, 0.0],
-            "scaleMulti" : 1.0,
             "isStatic" : false
         }
     ],
