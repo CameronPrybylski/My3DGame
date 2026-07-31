@@ -200,7 +200,13 @@ void Level::DrawObjects(Renderer& renderer)
 
 void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 {
-
+    for(auto& collision : collisions)
+    {
+        std::shared_ptr<GameObject> gameObject1 = objectMap.at(collision.body1.id);
+        std::shared_ptr<GameObject> gameObject2 = objectMap.at(collision.body2.id);
+        gameObject1->OnCollision(gameObject2, collision.collisionNormalBody1, dt);
+        gameObject2->OnCollision(gameObject1, collision.collisionNormalBody2, dt);
+    }
 }
 
 void Level::UpdateCamera(const Input& input, float dt)
