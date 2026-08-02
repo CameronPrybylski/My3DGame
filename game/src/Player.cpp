@@ -31,10 +31,10 @@ void Player::OnEvent(const Input& input)
         if(input.IsKeyDown("D"))
         {
             transform.rotation.y = direction - 90.0f;
-            //if(rigidBody.velocity.z < 250.0f)
-                //rigidBody.velocity.z += (sin(glm::radians(direction)) * 25.0f);
-            //if(rigidBody.velocity.x < 250.0f)
-                //rigidBody.velocity.x += (cos(glm::radians(direction)) * -25.0f);
+            if(rigidBody.velocity.z < 250.0f)
+                rigidBody.velocity.z = (sin(glm::radians(direction)) * 250.0f);
+            if(rigidBody.velocity.x < 250.0f)
+                rigidBody.velocity.x = (cos(glm::radians(direction)) * -250.0f);
         }
         else if(input.IsKeyDown("A"))
         {
@@ -45,47 +45,14 @@ void Player::OnEvent(const Input& input)
         else if(input.IsKeyDown("W"))
         {
             transform.rotation.y = direction;
-            //rigidBody.velocity.z = cos(glm::radians(direction)) * 250.0f;
-            //rigidBody.velocity.x = sin(glm::radians(direction)) * 250.0f;
+            rigidBody.velocity.z = cos(glm::radians(direction)) * 250.0f;
+            rigidBody.velocity.x = sin(glm::radians(direction)) * 250.0f;
         }
         else if(input.IsKeyDown("S"))
         {
             transform.rotation.y = direction - 180.0f;
             rigidBody.velocity.z = cos(glm::radians(direction)) * -250.0f;
             rigidBody.velocity.x = sin(glm::radians(direction)) * -250.0f;
-        }
-    }
-    else if(rigidBody.isCollidingVec.x == -1.0f || rigidBody.isCollidingVec.z == -1.0f)
-    {
-        if(input.IsKeyDown("W"))
-        {
-            transform.rotation.y = direction - 180.0f;
-            if(std::abs(rigidBody.velocity.z) < 250.0f)
-                rigidBody.velocity.z = cos(glm::radians(direction)) * -250.0f;
-            if(std::abs(rigidBody.velocity.x) < 250.0f)
-                rigidBody.velocity.x = sin(glm::radians(direction)) * -250.0f;
-        }
-        else if(input.IsKeyDown("S"))
-        {
-            transform.rotation.y = direction;
-            if(std::abs(rigidBody.velocity.z) < 250.0f)
-                rigidBody.velocity.z = cos(glm::radians(direction)) * 250.0f;
-            if(std::abs(rigidBody.velocity.x) < 250.0f)
-                rigidBody.velocity.x = sin(glm::radians(direction)) * 250.0f;
-        }
-        else if(input.IsKeyDown("D"))
-        {
-            transform.rotation.y = direction + 90.0f;
-            rigidBody.velocity.z = sin(glm::radians(direction)) * -250.0f;
-            rigidBody.velocity.x = cos(glm::radians(direction)) * 250.0f;
-        }
-        else if(input.IsKeyDown("A"))
-        {
-            transform.rotation.y = direction - 90.0f;
-            if(std::abs(rigidBody.velocity.z) < 250.0f)
-                rigidBody.velocity.z = sin(glm::radians(direction)) * 250.0f;
-            if(std::abs(rigidBody.velocity.x) < 250.0f)
-                rigidBody.velocity.x = cos(glm::radians(direction)) * -250.0f;
         }
     }
 
@@ -128,51 +95,13 @@ void Player::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 coll
     }
     else
     {
-        collidedObj->rigidBody.velocity.x = rigidBody.velocity.x;
-        collidedObj->rigidBody.velocity.z = rigidBody.velocity.z;
+        //collidedObj->rigidBody.velocity.x = rigidBody.velocity.x;
+        //collidedObj->rigidBody.velocity.z = rigidBody.velocity.z;
     }
 }
 
 void Player::Update(const Input& input, float dt)
-{
-    if(rigidBody.isCollidingVec.x == 0.0f && rigidBody.isCollidingVec.z == 0.0f)
-    {
-        if(input.IsKeyDown("D"))
-        {
-            transform.rotation.y = direction - 90.0f;
-            if(std::abs(rigidBody.velocity.z) < 250.0f)
-                rigidBody.velocity.z += sin(glm::radians(direction)) * 25.0f;
-            if(std::abs(rigidBody.velocity.x) < 250.0f)
-                rigidBody.velocity.x += cos(glm::radians(direction)) * -25.0f;
-        }
-        else if(input.IsKeyDown("A"))
-        {
-            transform.rotation.y = direction + 90.0f;
-            rigidBody.velocity.z = sin(glm::radians(direction)) * -250.0f;
-            rigidBody.velocity.x = cos(glm::radians(direction)) * 250.0f;
-        }
-        else if(input.IsKeyDown("W"))
-        {
-            transform.rotation.y = direction;
-            if(std::abs(rigidBody.velocity.z) < 250.0f)
-                rigidBody.velocity.z += cos(glm::radians(direction)) * 25.0f;
-            if(std::abs(rigidBody.velocity.x) < 250.0f)
-                rigidBody.velocity.x += sin(glm::radians(direction)) * 25.0f;
-        }
-        else if(input.IsKeyDown("S"))
-        {
-            transform.rotation.y = direction - 180.0f;
-            rigidBody.velocity.z = cos(glm::radians(direction)) * -250.0f;
-            rigidBody.velocity.x = sin(glm::radians(direction)) * -250.0f;
-        }
-    }
-    
-
-    if(!(input.IsKeyDown("W") || input.IsKeyDown("S") || input.IsKeyDown("A") || input.IsKeyDown("D")))
-    {
-        rigidBody.velocity.z = 0.0f;
-        rigidBody.velocity.x = 0.0f;
-    }
+{    
     GameObject::Update(input, dt);
 }
 
