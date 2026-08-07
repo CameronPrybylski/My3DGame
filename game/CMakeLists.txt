@@ -5,8 +5,11 @@ add_executable(My3DGame
     src/Cube.cpp
     src/Object.cpp
     src/Level.cpp
+    src/TexturedObject.cpp
     src/Player.cpp
+    src/NPC.cpp
     src/main.cpp
+    src/Enemy.cpp
     # Add your game source files here
 )
 

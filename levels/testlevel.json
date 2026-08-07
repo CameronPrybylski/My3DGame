@@ -26,7 +26,27 @@
             "color" : [0.0, 0.0, 0.0, 0.0],
             "mass" : 10.0,
             "posOffset" : [0.0, -75.0, 0.0],
-            "isStatic" : false
+            "isStatic" : false,
+            "hp" : 5
+        },
+        {
+            "name" : "enemy1",
+            "obj" : "/res/scene/scene.obj",
+            "mtl" : "/res/scene/scene.mtl",
+            "texturesFilePath" : "/res/scene/",
+            "type" : "enemy",
+            "position" : [650.0, 800.0, 300.0],
+            "rotation" : [0.0, 0.0, 90.0],
+            "scale" : [10.0, 10.0, 10.0],
+            "velocity" : [1.0, 0.0, 0.0],
+            "maxDistance" : 1000.0,
+            "direction" : [1.0, 0.0, 0.0],
+            "hitBoxScaleMulti" : [1.0, 1.0, 1.0],
+            "color" : [0.0, 1.0, 0.0, 0.7],
+            "mass" : 1.0,
+            "posOffset" : [0.0, 20.0, 0.0],
+            "isStatic" : false,
+            "hp" : 3
         },
         {
             "name" : "cube",
@@ -62,7 +82,7 @@
             "type" : "cube",
             "position" : [500.0, 350.0, 10.0],
             "scale" : [3000.0, 10.0, 3000.0],
-            "color" : [0.0, 0.7, 0.4, 1.0],
+            "color" : [0.0, 0.7, 0.4, 0.5],
             "mass" : 100.0,
             "posOffset" : [0.0, 0.0, 0.0],
             "isStatic" : true
@@ -76,7 +96,7 @@
             "position" : [650.0, 1200.0, 10.0],
             "scale" : [100.0, 200.0, 100.0],
             "color" : [0.0, 0.0, 1.0, 1.0],
-            "mass" : 1.0,
+            "mass" : 1000.0,
             "posOffset" : [0.0, 0.0, 0.0],
             "isStatic" : false
         }
@@ -88,6 +108,10 @@
             "maxZ" : 6000.0,
             "distanceFromPlayer" : 1000.0,
             "playerPosition" : [650.0, 800.0, 10.0]
+        },
+        {
+            "type" : "gravity",
+            "gravity" : [0.0, -600.0, 0.0]
         }
     ]
 }

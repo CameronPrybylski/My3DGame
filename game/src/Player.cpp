@@ -4,20 +4,9 @@
 #include <Engine/Renderer/Texture3D.h>
 
 Player::Player(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, glm::vec3 position, 
-        glm::vec3 scale, glm::vec4 color, float mass, bool isStatic)
+        glm::vec3 scale, glm::vec4 color, float mass, bool isStatic, int hp) : 
+        TexturedObject(name,submeshes,texturesFilePath,position,scale,color,mass,isStatic), hp(hp)
 {
-    mesh = std::make_shared<ObjectMesh>();
-    //mesh->SetVertTextInd(vert, ind);
-    this->submeshes = submeshes;
-    shaderName = "textureShader";
-    transform.position = position;
-    transform.scale = scale;
-    rigidBody.isStatic = isStatic;
-    rigidBody.mass = mass;
-    hitBox = transform;
-    this->color = color;
-    this->name = name;
-    this->texturesFilePath = texturesFilePath;
 }
 
 Player::~Player()
@@ -93,40 +82,9 @@ void Player::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 coll
     {
         jumps = 0;
     }
-    else
-    {
-        //collidedObj->rigidBody.velocity.x = rigidBody.velocity.x;
-        //collidedObj->rigidBody.velocity.z = rigidBody.velocity.z;
-    }
 }
 
 void Player::Update(const Input& input, float dt)
 {    
     GameObject::Update(input, dt);
-}
-
-void Player::Render(Renderer& renderer, const Camera& camera)
-{
-    for(int i = 0; i < submeshes.size(); ++i)
-    {
-        std::shared_ptr<Mesh> submesh = submeshes[i];
-        renderer.DrawTextureCube(*submesh, transform, camera, AssetManager::GetShader(shaderName), texturesMap[submesh->material->GetName()], color);
-    }
-    GameObject::Render(renderer, camera);
-}
-
-void Player::SetVertInd(std::vector<float> vert, std::vector<unsigned int> ind)
-{
-    mesh->SetVertTextInd(vert, ind);
-}
-
-void Player::SetMaterialMap(std::map<std::string, std::shared_ptr<Material>> materialMap)
-{
-    this->materialMap = materialMap;
-    std::map<std::string, std::shared_ptr<Material>>::iterator materialItr = materialMap.begin();
-    for(; materialItr != materialMap.end(); ++materialItr)
-    {
-        texturesMap[materialItr->first].Create(texturesFilePath + materialItr->second->GetMapKd());
-    }
-    //this->textures = textrs;
 }

@@ -1,6 +1,8 @@
 #include <Game/Level.h>
 #include <Game/Cube.h>
 #include <Game/Player.h>
+#include <Game/NPC.h>
+#include <Game/Enemy.h>
 #include <Game/Object.h>
 
 Level::Level(float screenWidth, float screenHeight, std::string root, std::string loadFilePath) : Scene(screenWidth, screenHeight), root(root), loadFilePath(loadFilePath)
@@ -47,8 +49,11 @@ void Level::LoadLevel()
                 glm::vec3 posOffset = glm::vec3{obj["posOffset"][0], obj["posOffset"][1], obj["posOffset"][2]};
 
                 glm::vec3 hitBoxScaleMulti = glm::vec3(1.0f, 1.0f, 1.0f);
+                glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
                 if(obj.contains("hitBoxScaleMulti"))
                     hitBoxScaleMulti = glm::vec3(obj["hitBoxScaleMulti"][0], obj["hitBoxScaleMulti"][1], obj["hitBoxScaleMulti"][2]);
+                if(obj.contains("rotation"))
+                    rotation = glm::vec3(obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]);
                 glm::vec3 hitBoxScale = glm::vec3(scale.x * hitBoxScaleMulti.x, scale.y * hitBoxScaleMulti.y, scale.z * hitBoxScaleMulti.z);
                 std::shared_ptr<GameObject> gameObj;
                 if(obj["texturesFilePath"] == "" && obj["type"] == "object")
@@ -65,12 +70,26 @@ void Level::LoadLevel()
                     objectLoader.LoadVertIndTex(root + std::string(obj["obj"]), root + std::string(obj["mtl"]));
                     //objectLoader.LoadVertIndTex(root + "/res/crashbandicoot/crashbandicoot.obj", root + "/res/crashbandicoot/crashbandicoot.mtl"); 
                     //"obj" : "/res/tidus/High Poly Tidus.obj",
-                    //"mtl" : "/res/tidus/High Poly Tidus.mtl", 
-                    std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes();
-                    player = std::make_shared<Player>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic);
-                    player->SetMaterialMap(objectLoader.GetMaterialMap());
-                    player->SetRendPosOffSet(posOffset);
-                    gameObj = player;
+                    //"mtl" : "/res/tidus/High Poly Tidus.mtl",
+                    std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes(); 
+                    if(name == "player")
+                    {
+                        player = std::make_shared<Player>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic, obj["hp"]);
+                        player->SetMaterialMap(objectLoader.GetMaterialMap());
+                        player->SetRendPosOffSet(posOffset);
+                        gameObj = player;
+                    }
+                    else if(obj["type"] == "enemy")
+                    {
+                        float maxDistance = obj["maxDistance"];
+                        glm::vec3 velocity = glm::vec3(obj["velocity"][0], obj["velocity"][1], obj["velocity"][2]);
+                        glm::vec3 direction = glm::vec3(obj["direction"][0], obj["direction"][1], obj["direction"][2]);
+                        std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic, maxDistance, velocity, direction, obj["hp"]);
+                        enemy->SetMaterialMap(objectLoader.GetMaterialMap());
+                        enemy->SetRendPosOffSet(posOffset);
+                        enemies[name] = enemy;
+                        gameObj = enemy;
+                    }
                 }
                 else if(obj["type"] == "cube")
                 {
@@ -78,6 +97,7 @@ void Level::LoadLevel()
                     gameObj = cube;
                 }
                 gameObj->hitBox.scale = hitBoxScale;
+                gameObj->transform.rotation = rotation;
                 AddObject(name, gameObj);
             }
             else if(item.key() == "levelParams")
@@ -86,6 +106,10 @@ void Level::LoadLevel()
                 {
                     glm::vec3 playerPosition = glm::vec3{obj["playerPosition"][0], obj["playerPosition"][1], obj["playerPosition"][2]};
                     camera.Create(0.0f, screenWidth, 0.0f, screenHeight, obj["minZ"], obj["maxZ"], obj["distanceFromPlayer"], playerPosition);
+                }
+                if(obj["type"] == "gravity")
+                {
+                    this->gravity = glm::vec3(obj["gravity"][0], obj["gravity"][1], obj["gravity"][2]);
                 }
             }
         }
@@ -102,10 +126,6 @@ void Level::LoadLevel()
 
 void Level::LoadPhysics(PhysicsSystem& physics)
 {
-    glm::vec3 gravity;
-    gravity.x = 0.0f;
-    gravity.z = 0.0f;
-    gravity.y = -500.0f;
     physics.SetGravity(gravity);
     for(auto& obj : objectMap)
     {
@@ -177,6 +197,26 @@ void Level::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
 {
     std::vector<CollisionEvent> collisions = physics.Update(dt);
     OnCollision(collisions, dt);
+
+    std::map<std::string, std::shared_ptr<Enemy>>::iterator enemy = this->enemies.begin();
+    if(!player->IsAlive())
+    {
+        RemoveObject(player->name);
+        physics.RemoveBody(player->name);
+    }
+    for(; enemy != enemies.end();)
+    {
+        if(!enemy->second->IsAlive())
+        {
+            RemoveObject(enemy->first);
+            physics.RemoveBody(enemy->first);
+            enemy = enemies.erase(enemy);
+        }
+        else
+        {
+            ++enemy;
+        }
+    }
     for(auto& obj : objectList)
     {
         obj->Update(input, dt);
@@ -206,6 +246,40 @@ void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
         std::shared_ptr<GameObject> gameObject2 = objectMap.at(collision.body2.id);
         gameObject1->OnCollision(gameObject2, collision.collisionNormalBody1, dt);
         gameObject2->OnCollision(gameObject1, collision.collisionNormalBody2, dt);
+        if( (enemies.count(collision.body1.id) || enemies.count(collision.body2.id) )&&
+            (gameObject1->name == "player" || gameObject2->name == "player"))
+        {
+            EnemyPlayerCollision(collision.body1.id, collision.body2.id, collision.collisionNormalBody1, collision.collisionNormalBody2);
+        }
+    }
+}
+
+void Level::EnemyPlayerCollision(std::string body1Name, std::string body2Name, glm::vec3 body1CollNorm, glm::vec3 body2CollNorm)
+{
+    std::shared_ptr<Enemy> enemy;
+    glm::vec3 playerCollisionNormal;
+    if(body1Name == "player")
+    {
+        enemy = enemies.at(body2Name);
+        playerCollisionNormal = body1CollNorm;
+    }
+    else
+    {
+        enemy = enemies.at(body1Name);
+        playerCollisionNormal = body2CollNorm;
+    }
+    if(playerCollisionNormal.y == 1)
+    {
+        enemy->TakeDamage(1);
+    }
+    else
+    {
+        player->TakeDamage(1);
+        player->rigidBody.velocity = glm::vec3(0.0f,0.0f,0.0f);
+        float speed = 500.0f;
+        player->rigidBody.velocity.y = speed;
+        player->rigidBody.velocity.x = speed * playerCollisionNormal.x;
+        player->rigidBody.velocity.z = speed * playerCollisionNormal.z;
     }
 }
 
