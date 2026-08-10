@@ -1,0 +1,22 @@
+{
+    "objects" : [
+        {
+            "type" : "StringText",
+            "name" : "GameOver",
+            "position" : [0.0,0.0,0.0],
+            "color" : [1.0,1.0,1.0,1.0],
+            "fontSize" : 20,
+            "fontPath" : "/fonts/OpenSans-Bold.ttf",
+            "text" : "Game Over"
+        }
+    ],
+    "levelParams" : [
+        {
+            "type" : "camera",
+            "minZ" : 0.1,
+            "maxZ" : 1000.0,
+            "distanceFrom" : 200.0,
+            "lookAt" : [0.0, 0.0, 0.0]
+        }
+    ]
+}

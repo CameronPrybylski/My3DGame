@@ -27,7 +27,7 @@
             "mass" : 10.0,
             "posOffset" : [0.0, -75.0, 0.0],
             "isStatic" : false,
-            "hp" : 5
+            "hp" : 1
         },
         {
             "name" : "enemy1",

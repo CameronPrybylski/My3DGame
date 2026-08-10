@@ -203,6 +203,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     {
         RemoveObject(player->name);
         physics.RemoveBody(player->name);
+        EndScene("gameOver");
     }
     for(; enemy != enemies.end();)
     {

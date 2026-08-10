@@ -10,6 +10,7 @@ add_executable(My3DGame
     src/NPC.cpp
     src/main.cpp
     src/Enemy.cpp
+    src/GameOver.cpp
     # Add your game source files here
 )
 
