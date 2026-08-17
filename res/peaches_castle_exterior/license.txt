@@ -1,0 +1,11 @@
+Model Information:
+* title:	Super Mario 64 - Peach's Castle Exterior
+* source:	https://sketchfab.com/3d-models/super-mario-64-peachs-castle-exterior-38a87167983943048b918fcdd415f9bf
+* author:	Garu (https://sketchfab.com/Garu.The.Ninja)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Super Mario 64 - Peach's Castle Exterior" (https://sketchfab.com/3d-models/super-mario-64-peachs-castle-exterior-38a87167983943048b918fcdd415f9bf) by Garu (https://sketchfab.com/Garu.The.Ninja) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

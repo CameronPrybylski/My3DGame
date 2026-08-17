@@ -43,7 +43,11 @@ void TexturedObject::Render(Renderer& renderer, const Camera& camera)
     for(int i = 0; i < submeshes.size(); ++i)
     {
         std::shared_ptr<Mesh> submesh = submeshes[i];
-        renderer.DrawTextureCube(*submesh, transform, camera, AssetManager::GetShader(shaderName), texturesMap[submesh->material->GetName()], color);
+        Texture t;
+        if(submesh->material != nullptr && texturesMap.count(submesh->material->GetName()))
+            renderer.DrawTextureCube(*submesh, transform, camera, AssetManager::GetShader(shaderName), texturesMap[submesh->material->GetName()], true, color, lightPos);
+        else
+            renderer.DrawTextureCube(*submesh, transform, camera, AssetManager::GetShader(shaderName), t, false, color, lightPos);
     }
     GameObject::Render(renderer, camera);
 }
@@ -59,6 +63,7 @@ void TexturedObject::SetMaterialMap(std::map<std::string, std::shared_ptr<Materi
     std::map<std::string, std::shared_ptr<Material>>::iterator materialItr = materialMap.begin();
     for(; materialItr != materialMap.end(); ++materialItr)
     {
-        texturesMap[materialItr->first].Create(texturesFilePath + materialItr->second->GetMapKd());
+        if(!materialItr->second->GetMapKd().empty())
+            texturesMap[materialItr->first].Create(texturesFilePath + materialItr->second->GetMapKd());
     }
 }

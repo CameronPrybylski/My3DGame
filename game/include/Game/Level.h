@@ -37,6 +37,7 @@ private:
     bool cameraTowards = false;
     bool cameraAway = false;
     float angle = 0.0f;
+    glm::vec3 lightPos = glm::vec3(0.0f,0.0f,0.0f);
 
     void EnemyPlayerCollision(std::string body1Name, std::string body2Name, glm::vec3 body1CollNorm, glm::vec3 body2CollNorm);
 

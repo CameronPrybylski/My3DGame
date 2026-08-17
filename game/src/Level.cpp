@@ -58,29 +58,39 @@ void Level::LoadLevel()
                 std::shared_ptr<GameObject> gameObj;
                 if(obj["texturesFilePath"] == "" && obj["type"] == "object")
                 {
-                    std::string filePath = root + std::string(obj["obj"]);
-                    objectLoader.LoadVertInd(root + std::string(obj["obj"]));
-                    std::vector<unsigned int> indecies = objectLoader.GetIndecies();
-                    std::vector<float> vertices = objectLoader.GetVertexPos();
-                    std::shared_ptr<Object> object = std::make_shared<Object>(name, vertices, indecies, position, scale, color, mass, isStatic);
+                    std::string filePath = root + std::string(obj["gltf"]);
+                    objectLoader.LoadGLTF(filePath, filePath);
+                    std::vector<std::shared_ptr<Mesh>> subMeshes = objectLoader.GetSubMeshes();
+                    //objectLoader.LoadVertInd(root + std::string(obj["obj"]));
+                    //std::vector<unsigned int> indecies = objectLoader.GetIndecies();
+                    //std::vector<float> vertices = objectLoader.GetVertexPos();
+                    //std::shared_ptr<Object> object = std::make_shared<Object>(name, vertices, indecies, position, scale, color, mass, isStatic);
+                    //std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, glm::vec3 position, glm::vec3 scale, glm::vec4 color, float mass, bool isStatic
+                    std::shared_ptr<TexturedObject> object = std::make_shared<TexturedObject>(name, subMeshes, root + "/res/crash_bandicoot/textures", position, scale, color, mass, isStatic);
+                    object->transform.rotation = glm::vec3(obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]);
                     gameObj = object;
                 }
                 else if(obj["texturesFilePath"] != "")
                 {
-                    objectLoader.LoadVertIndTex(root + std::string(obj["obj"]), root + std::string(obj["mtl"]));
+                    //objectLoader.LoadVertIndTex(root + std::string(obj["obj"]), root + std::string(obj["mtl"]));
                     //objectLoader.LoadVertIndTex(root + "/res/crashbandicoot/crashbandicoot.obj", root + "/res/crashbandicoot/crashbandicoot.mtl"); 
                     //"obj" : "/res/tidus/High Poly Tidus.obj",
                     //"mtl" : "/res/tidus/High Poly Tidus.mtl",
-                    std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes(); 
+                    std::vector<std::shared_ptr<Mesh>> submeshes;// = objectLoader.GetSubMeshes(); 
                     if(name == "player")
                     {
+                        std::string path = root + (std::string)obj["gltfPath"];
+                        objectLoader.LoadGLTF(path, path);
+                        submeshes = objectLoader.GetSubMeshes();
                         player = std::make_shared<Player>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic, obj["hp"]);
-                        player->SetMaterialMap(objectLoader.GetMaterialMap());
-                        player->SetRendPosOffSet(posOffset);
+                        //player->SetMaterialMap(objectLoader.GetMaterialMap());
+                        //player->SetRendPosOffSet(posOffset);
                         gameObj = player;
+                        //objectLoader.LoadGLTF(path, obj["gltfFile"]);
                     }
                     else if(obj["type"] == "enemy")
                     {
+                        /*
                         float maxDistance = obj["maxDistance"];
                         glm::vec3 velocity = glm::vec3(obj["velocity"][0], obj["velocity"][1], obj["velocity"][2]);
                         glm::vec3 direction = glm::vec3(obj["direction"][0], obj["direction"][1], obj["direction"][2]);
@@ -89,6 +99,17 @@ void Level::LoadLevel()
                         enemy->SetRendPosOffSet(posOffset);
                         enemies[name] = enemy;
                         gameObj = enemy;
+                        */
+                       continue;
+                    }
+                    else if(obj["type"] == "object")
+                    {
+                        std::string path = root + (std::string)obj["gltf"];
+                        objectLoader.LoadGLTF(path, path);
+                        submeshes = objectLoader.GetSubMeshes();
+                        std::shared_ptr<TexturedObject> object = std::make_shared<TexturedObject>(name,submeshes,root + std::string(obj["texturesFilePath"]),position,scale,color,mass,isStatic);
+                        object->SetMaterialMap(objectLoader.GetMaterialMap());
+                        gameObj = object;
                     }
                 }
                 else if(obj["type"] == "cube")
@@ -111,6 +132,10 @@ void Level::LoadLevel()
                 {
                     this->gravity = glm::vec3(obj["gravity"][0], obj["gravity"][1], obj["gravity"][2]);
                 }
+                if(obj["type"] == "lightPos")
+                {
+                    this->lightPos = glm::vec3(obj["lightPos"][0], obj["lightPos"][1], obj["lightPos"][2]);
+                }
             }
         }
     }
@@ -130,6 +155,7 @@ void Level::LoadPhysics(PhysicsSystem& physics)
     for(auto& obj : objectMap)
     {
         physics.RegisterBody(obj.second->hitBox, obj.second->rigidBody, obj.second->name);
+        obj.second->lightPos = this->lightPos;
     }
 }
 

@@ -2,8 +2,11 @@
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec2 aTexCoord;
+layout (location = 2) in vec3 aNormCoord;
 
 out vec2 v_TexCoord;
+out vec3 v_NormCoord;
+out vec3 v_FragPos;
 //out vec4 v_ColorCoord;
 uniform mat4 u_MVP;
 void main()
@@ -11,5 +14,7 @@ void main()
    // gl_Position = vec4(aPos, 0.0, 1.0);
    gl_Position = u_MVP * vec4(aPos, 1.0f);
    v_TexCoord = aTexCoord;
+   v_NormCoord = aNormCoord;
+   v_FragPos = aPos;
    //v_ColorCoord = colorCoor;
 }

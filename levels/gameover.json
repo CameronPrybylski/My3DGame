@@ -6,7 +6,7 @@
             "position" : [0.0,0.0,0.0],
             "color" : [1.0,1.0,1.0,1.0],
             "fontSize" : 20,
-            "fontPath" : "/fonts/OpenSans-Bold.ttf",
+            "fontPath" : "/fonts/DotGothic16-Regular.ttf",
             "text" : "Game Over"
         }
     ],
