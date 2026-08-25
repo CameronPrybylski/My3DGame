@@ -4,17 +4,19 @@
         {
             "name" : "teapot",
             "obj" : "/res/teapot.obj",
-            "gltf" : "/res/crash_bandicoot/scene.gltf",
+            "gltf" : "/res/cloud_strife/scene.gltf",
             "mtl" : "",
             "texturesFilePath" : "",
             "type" : "object",
-            "position" : [-500.0, 500.0, 10.0],
-            "rotation" : [-90.0, 0.0, 0.0],
-            "scale" : [5.0, 5.0, 5.0],
-            "color" : [0.5, 0.5, 0.0, 1.0],
+            "position" : [-500.0, 1000.0, 10.0],
+            "rotation" : [0.0, 0.0, 0.0],
+            "scale" : [1000.0, 1000.0, 1000.0],
+            "hitBoxScaleMulti" : [0.1, 0.1, 0.1],
+            "color" : [0.0, 0.0, 0.0, 0.0],
             "mass" : 1.0,
-            "posOffset" : [0.0, 0.0, 0.0],
-            "isStatic" : false
+            "posOffset" : [0.0, -50.0, 0.0],
+            "isStatic" : false,
+            "flipYZ" : false
         },
         {
             "name" : "castle",
@@ -23,31 +25,34 @@
             "texturesFilePath" : "/res/Peaches-Castle/",
             "gltf" : "/res/peaches_castle_exterior/scene.gltf",
             "type" : "object",
-            "position" : [1000.0, 500.0, 10.0],
-            "scale" : [10.0, 10.0, 10.0],
+            "position" : [1000.0, 1000.0, 1000.0],
+            "rotation" : [0.0, 0.0, 0.0],
+            "scale" : [100.0, 100.0, 100.0],
             "hitBoxScaleMulti" : [1.0, 1.0, 1.0],
-            "color" : [1.0, 1.0, 1.0, 1.0],
+            "color" : [0.0, 0.0, 0.0, 0.0],
             "mass" : 100.0,
-            "posOffset" : [0.0, 0.0, 0.0],
-            "isStatic" : false
+            "posOffset" : [0.0, 500.0, 0.0],
+            "isStatic" : false,
+            "flipYZ" : true
         },
         {
             "name" : "player",
             "obj" : "/res/crash-bandicoot/crashbandicoot.obj",
             "mtl" : "/res/crash-bandicoot/crashbandicoot.mtl",
             "texturesFilePath" : "/res/crash-bandicoot/",
-            "gltfPath" : "/res/crash_bandicoot/scene.gltf",
-            "gltfFile" : "/res/crash_bandicoot/scene.gltf",
+            "gltfPath" : "/res/kingdom_hearts_riku/scene.gltf",
+            "gltfFile" : "/res/cloud_strife/scene.gltf",
             "type" : "player",
             "position" : [650.0, 500.0, 0.0],
             "scale" : [1.0, 1.0, 1.0],
-            "rotation" : [-90.0, 0.0, 0.0],
-            "hitBoxScaleMulti" : [1.0, 1.0, 1.0],
-            "color" : [0.0, 0.0, 1.0, 1.0],
+            "rotation" : [0.0, 0.0, 180.0],
+            "hitBoxScaleMulti" : [15.0, 150.0, 15.0],
+            "color" : [0.0, 0.0, 0.0, 0.0],
             "mass" : 10.0,
-            "posOffset" : [0.0, 0.0, 0.0],
+            "posOffset" : [0.0, -75.0, 0.0],
             "isStatic" : false,
-            "hp" : 5
+            "hp" : 5,
+            "flipYZ" : true
         },
         {
             "name" : "enemy1",
@@ -135,7 +140,7 @@
         },
         {
             "type" : "lightPos",
-            "lightPos" : [500.0, 1000.0, 1000.0]
+            "lightPos" : [-500.0, 2000.0, 1000.0]
         }
     ]
 }

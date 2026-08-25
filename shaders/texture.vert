@@ -8,13 +8,24 @@ out vec2 v_TexCoord;
 out vec3 v_NormCoord;
 out vec3 v_FragPos;
 //out vec4 v_ColorCoord;
-uniform mat4 u_MVP;
+uniform mat4 u_Model;
+uniform mat4 u_View;
+uniform mat4 u_Projection;
 void main()
 {
-   // gl_Position = vec4(aPos, 0.0, 1.0);
-   gl_Position = u_MVP * vec4(aPos, 1.0f);
+   // Transform position into world space
+   v_FragPos = vec3(u_Model * vec4(aPos, 1.0));
+
+   // Transform normal into world space
+   mat3 normalMatrix = transpose(inverse(mat3(u_Model)));
+   v_NormCoord = normalMatrix * aNormCoord;
+
    v_TexCoord = aTexCoord;
-   v_NormCoord = aNormCoord;
-   v_FragPos = aPos;
-   //v_ColorCoord = colorCoor;
+
+   // Final clip-space position
+   gl_Position =
+      u_Projection *
+      u_View *
+      u_Model *
+      vec4(aPos, 1.0);
 }

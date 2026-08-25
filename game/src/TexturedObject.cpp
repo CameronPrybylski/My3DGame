@@ -46,8 +46,14 @@ void TexturedObject::Render(Renderer& renderer, const Camera& camera)
         Texture t;
         if(submesh->material != nullptr && texturesMap.count(submesh->material->GetName()))
             renderer.DrawTextureCube(*submesh, transform, camera, AssetManager::GetShader(shaderName), texturesMap[submesh->material->GetName()], true, color, lightPos);
+        else if(i < textures.size())
+        {
+            renderer.DrawTextureCube(*submesh, transform, camera, AssetManager::GetShader(shaderName), *textures[i], true, color, lightPos);
+        }
         else
+        {
             renderer.DrawTextureCube(*submesh, transform, camera, AssetManager::GetShader(shaderName), t, false, color, lightPos);
+        }
     }
     GameObject::Render(renderer, camera);
 }

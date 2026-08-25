@@ -59,7 +59,7 @@ void Level::LoadLevel()
                 if(obj["texturesFilePath"] == "" && obj["type"] == "object")
                 {
                     std::string filePath = root + std::string(obj["gltf"]);
-                    objectLoader.LoadGLTF(filePath, filePath);
+                    objectLoader.LoadGLTF(filePath, filePath, obj["flipYZ"]);
                     std::vector<std::shared_ptr<Mesh>> subMeshes = objectLoader.GetSubMeshes();
                     //objectLoader.LoadVertInd(root + std::string(obj["obj"]));
                     //std::vector<unsigned int> indecies = objectLoader.GetIndecies();
@@ -68,6 +68,8 @@ void Level::LoadLevel()
                     //std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, glm::vec3 position, glm::vec3 scale, glm::vec4 color, float mass, bool isStatic
                     std::shared_ptr<TexturedObject> object = std::make_shared<TexturedObject>(name, subMeshes, root + "/res/crash_bandicoot/textures", position, scale, color, mass, isStatic);
                     object->transform.rotation = glm::vec3(obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]);
+                    object->SetTextures(objectLoader.GetTexturesGLTF());
+                    object->SetRendPosOffSet(posOffset);
                     gameObj = object;
                 }
                 else if(obj["texturesFilePath"] != "")
@@ -80,11 +82,12 @@ void Level::LoadLevel()
                     if(name == "player")
                     {
                         std::string path = root + (std::string)obj["gltfPath"];
-                        objectLoader.LoadGLTF(path, path);
+                        objectLoader.LoadGLTF(path, path, obj["flipYZ"]);
                         submeshes = objectLoader.GetSubMeshes();
                         player = std::make_shared<Player>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic, obj["hp"]);
                         //player->SetMaterialMap(objectLoader.GetMaterialMap());
-                        //player->SetRendPosOffSet(posOffset);
+                        player->SetRendPosOffSet(posOffset);
+                        player->SetTextures(objectLoader.GetTexturesGLTF());
                         gameObj = player;
                         //objectLoader.LoadGLTF(path, obj["gltfFile"]);
                     }
@@ -105,10 +108,11 @@ void Level::LoadLevel()
                     else if(obj["type"] == "object")
                     {
                         std::string path = root + (std::string)obj["gltf"];
-                        objectLoader.LoadGLTF(path, path);
+                        objectLoader.LoadGLTF(path, path, obj["flipYZ"]);
                         submeshes = objectLoader.GetSubMeshes();
                         std::shared_ptr<TexturedObject> object = std::make_shared<TexturedObject>(name,submeshes,root + std::string(obj["texturesFilePath"]),position,scale,color,mass,isStatic);
-                        object->SetMaterialMap(objectLoader.GetMaterialMap());
+                        //object->SetMaterialMap(objectLoader.GetMaterialMap());
+                        object->SetTextures(objectLoader.GetTexturesGLTF());
                         gameObj = object;
                     }
                 }

@@ -1,0 +1,8 @@
+Model Information:
+* title:	Kingdom Hearts Riku
+* source:	https://sketchfab.com/3d-models/kingdom-hearts-riku-130b7c4f65b748a6a6da3cb9ac8f70bb
+* author:	Tigerar1 (https://sketchfab.com/allanromanreyes)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

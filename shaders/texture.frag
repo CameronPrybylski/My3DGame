@@ -41,7 +41,7 @@ void main()
 
       // 4. Combine Components
       // Add ambient light so shadows are not completely pitch black.
-      vec3 AmbientColor = vec3(0.4f,0.4f,0.4f);
+      vec3 AmbientColor = vec3(0.5f,0.5f,0.5f);
       vec3 lighting = AmbientColor + diffuse;
 
       // 5. Final Output

@@ -23,6 +23,8 @@ public:
     void SetMaterialMap(std::map<std::string, std::shared_ptr<Material>> materialMap);
     void SetSubMeshes(std::vector<std::shared_ptr<Mesh>> submeshes){this->submeshes = submeshes;}
 
+    void SetTextures(std::vector<std::shared_ptr<Texture>> textures){this->textures = textures;}
+
 
 protected:
     bool rotatingCounter = false;
@@ -32,6 +34,7 @@ protected:
     std::map<std::string, Texture> texturesMap;
     std::vector<std::shared_ptr<Mesh>> submeshes;
     std::string texturesFilePath;
+    std::vector<std::shared_ptr<Texture>> textures;
 
     float direction = 0.0f;
 };
