@@ -1,0 +1,11 @@
+Model Information:
+* title:	heartless
+* source:	https://sketchfab.com/3d-models/heartless-f71f9706af1742989082126a8daec21f
+* author:	dgoodwin849 (https://sketchfab.com/dgoodwin849)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "heartless" (https://sketchfab.com/3d-models/heartless-f71f9706af1742989082126a8daec21f) by dgoodwin849 (https://sketchfab.com/dgoodwin849) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

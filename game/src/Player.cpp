@@ -19,7 +19,7 @@ void Player::OnEvent(const Input& input)
     {
         if(input.IsKeyDown("D"))
         {
-            transform.rotation.y = (direction) - 90.0f;
+            transform.rotation.y = (direction) + 90.0f;
             if(rigidBody.velocity.z < 250.0f)
                 rigidBody.velocity.z = (sin(glm::radians(direction)) * 250.0f);
             if(rigidBody.velocity.x < 250.0f)
@@ -27,19 +27,19 @@ void Player::OnEvent(const Input& input)
         }
         else if(input.IsKeyDown("A"))
         {
-            transform.rotation.y = (direction) + 90.0f;
+            transform.rotation.y = (direction) - 90.0f;
             rigidBody.velocity.z = sin(glm::radians(direction)) * -250.0f;
             rigidBody.velocity.x = cos(glm::radians(direction)) * 250.0f;
         }
         else if(input.IsKeyDown("W"))
         {
-            transform.rotation.y = direction;
+            transform.rotation.y = direction - 180.0f;
             rigidBody.velocity.z = cos(glm::radians(direction)) * 250.0f;
             rigidBody.velocity.x = sin(glm::radians(direction)) * 250.0f;
         }
         else if(input.IsKeyDown("S"))
         {
-            transform.rotation.y = (direction) - 180.0f;
+            transform.rotation.y = (direction);
             rigidBody.velocity.z = cos(glm::radians(direction)) * -250.0f;
             rigidBody.velocity.x = sin(glm::radians(direction)) * -250.0f;
         }

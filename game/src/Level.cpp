@@ -61,11 +61,6 @@ void Level::LoadLevel()
                     std::string filePath = root + std::string(obj["gltf"]);
                     objectLoader.LoadGLTF(filePath, filePath, obj["flipYZ"]);
                     std::vector<std::shared_ptr<Mesh>> subMeshes = objectLoader.GetSubMeshes();
-                    //objectLoader.LoadVertInd(root + std::string(obj["obj"]));
-                    //std::vector<unsigned int> indecies = objectLoader.GetIndecies();
-                    //std::vector<float> vertices = objectLoader.GetVertexPos();
-                    //std::shared_ptr<Object> object = std::make_shared<Object>(name, vertices, indecies, position, scale, color, mass, isStatic);
-                    //std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, glm::vec3 position, glm::vec3 scale, glm::vec4 color, float mass, bool isStatic
                     std::shared_ptr<TexturedObject> object = std::make_shared<TexturedObject>(name, subMeshes, root + "/res/crash_bandicoot/textures", position, scale, color, mass, isStatic);
                     object->transform.rotation = glm::vec3(obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]);
                     object->SetTextures(objectLoader.GetTexturesGLTF());
@@ -74,10 +69,6 @@ void Level::LoadLevel()
                 }
                 else if(obj["texturesFilePath"] != "")
                 {
-                    //objectLoader.LoadVertIndTex(root + std::string(obj["obj"]), root + std::string(obj["mtl"]));
-                    //objectLoader.LoadVertIndTex(root + "/res/crashbandicoot/crashbandicoot.obj", root + "/res/crashbandicoot/crashbandicoot.mtl"); 
-                    //"obj" : "/res/tidus/High Poly Tidus.obj",
-                    //"mtl" : "/res/tidus/High Poly Tidus.mtl",
                     std::vector<std::shared_ptr<Mesh>> submeshes;// = objectLoader.GetSubMeshes(); 
                     if(name == "player")
                     {
@@ -85,25 +76,23 @@ void Level::LoadLevel()
                         objectLoader.LoadGLTF(path, path, obj["flipYZ"]);
                         submeshes = objectLoader.GetSubMeshes();
                         player = std::make_shared<Player>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic, obj["hp"]);
-                        //player->SetMaterialMap(objectLoader.GetMaterialMap());
                         player->SetRendPosOffSet(posOffset);
                         player->SetTextures(objectLoader.GetTexturesGLTF());
                         gameObj = player;
-                        //objectLoader.LoadGLTF(path, obj["gltfFile"]);
                     }
                     else if(obj["type"] == "enemy")
                     {
-                        /*
+                        std::string path = root + (std::string)obj["gltf"];
+                        objectLoader.LoadGLTF(path, path, true);
+                        submeshes = objectLoader.GetSubMeshes();
                         float maxDistance = obj["maxDistance"];
                         glm::vec3 velocity = glm::vec3(obj["velocity"][0], obj["velocity"][1], obj["velocity"][2]);
                         glm::vec3 direction = glm::vec3(obj["direction"][0], obj["direction"][1], obj["direction"][2]);
                         std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic, maxDistance, velocity, direction, obj["hp"]);
-                        enemy->SetMaterialMap(objectLoader.GetMaterialMap());
+                        enemy->SetTextures(objectLoader.GetTexturesGLTF());
                         enemy->SetRendPosOffSet(posOffset);
                         enemies[name] = enemy;
                         gameObj = enemy;
-                        */
-                       continue;
                     }
                     else if(obj["type"] == "object")
                     {
@@ -111,7 +100,6 @@ void Level::LoadLevel()
                         objectLoader.LoadGLTF(path, path, obj["flipYZ"]);
                         submeshes = objectLoader.GetSubMeshes();
                         std::shared_ptr<TexturedObject> object = std::make_shared<TexturedObject>(name,submeshes,root + std::string(obj["texturesFilePath"]),position,scale,color,mass,isStatic);
-                        //object->SetMaterialMap(objectLoader.GetMaterialMap());
                         object->SetTextures(objectLoader.GetTexturesGLTF());
                         gameObj = object;
                     }
