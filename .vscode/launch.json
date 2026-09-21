@@ -20,7 +20,7 @@
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb/lldb",
-          "text": "-enable-pretty-printing",
+          "text": "-disable-pretty-printing",
           "ignoreFailures": true
         }
       ]

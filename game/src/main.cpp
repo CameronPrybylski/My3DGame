@@ -2,6 +2,7 @@
 #include <Engine/Scene/Application.h>
 #include <Game/Level.h>
 #include <Game/GameOver.h>
+#include <Game/Battle/Battle.h>
 
 #include <iostream>
 
@@ -29,11 +30,12 @@ int main()
         //Scene scene;
         std::shared_ptr<Level> level = std::make_shared<Level>(1067.0f, 800.0f, std::string(root), "/levels/testlevel.json");
         std::shared_ptr<GameOver> gameOver = std::make_shared<GameOver>(1067.0f, 800.0f, std::string(root), "/levels/gameover.json", "level");
-
+        std::shared_ptr<Battle> battle = std::make_shared<Battle>(1067.0f, 800.0f, std::string(root), "/levels/battle.json");
 
         app.AddScene("level", level);
         app.AddScene("gameOver", gameOver);
-        app.SetScene("level");
+        app.AddScene("battle", battle);
+        app.SetScene("battle");
         
         AssetManager::LoadShader("objectShader", (std::string(root) + "/shaders/basic.vert").c_str(), (std::string(root) + "/shaders/basic.frag").c_str());
         AssetManager::LoadShader("textureShader", (std::string(root) + "/shaders/texture.vert").c_str(), (std::string(root) + "/shaders/texture.frag").c_str());

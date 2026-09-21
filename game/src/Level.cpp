@@ -143,16 +143,12 @@ void Level::LoadLevel()
 
 void Level::LoadPhysics(PhysicsSystem& physics)
 {
-    physics.SetGravity(gravity);
-    for(auto& obj : objectMap)
-    {
-        physics.RegisterBody(obj.second->hitBox, obj.second->rigidBody, obj.second->name);
-        obj.second->lightPos = this->lightPos;
-    }
+    Scene::LoadPhysics(physics);
 }
 
 void Level::OnEvent(const Input& input)
 {
+    Scene::OnEvent(input);
    
     if(input.IsKeyDown("L"))
     {
@@ -204,11 +200,6 @@ void Level::OnEvent(const Input& input)
         cameraAway = false;
     }
     
-
-    for(auto obj : objectList)
-    {
-        obj->OnEvent(input);
-    }
 }
 
 void Level::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
@@ -216,13 +207,13 @@ void Level::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     std::vector<CollisionEvent> collisions = physics.Update(dt);
     OnCollision(collisions, dt);
 
-    std::map<std::string, std::shared_ptr<Enemy>>::iterator enemy = this->enemies.begin();
     if(!player->IsAlive())
     {
         RemoveObject(player->name);
         physics.RemoveBody(player->name);
         EndScene("gameOver");
     }
+    std::map<std::string, std::shared_ptr<Enemy>>::iterator enemy = this->enemies.begin();
     for(; enemy != enemies.end();)
     {
         if(!enemy->second->IsAlive())
@@ -236,10 +227,9 @@ void Level::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
             ++enemy;
         }
     }
-    for(auto& obj : objectList)
-    {
-        obj->Update(input, dt);
-    }
+    
+    Scene::OnUpdate(input, physics, dt);
+
     playerCube->transform.position = player->transform.position;
     playerCube->hitBox.position = player->hitBox.position;
     playerCube->transform.position.y += 75.0f;
@@ -275,6 +265,7 @@ void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 
 void Level::EnemyPlayerCollision(std::string body1Name, std::string body2Name, glm::vec3 body1CollNorm, glm::vec3 body2CollNorm)
 {
+    EndScene("battle");
     std::shared_ptr<Enemy> enemy;
     glm::vec3 playerCollisionNormal;
     if(body1Name == "player")

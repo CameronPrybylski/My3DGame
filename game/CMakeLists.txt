@@ -11,6 +11,10 @@ add_executable(My3DGame
     src/main.cpp
     src/Enemy.cpp
     src/GameOver.cpp
+    src/Battle/Battle.cpp
+    src/Battle/EnemyInBattle.cpp
+    src/Battle/PlayerInBattle.cpp
+    src/Battle/ActorInBattle.cpp
     # Add your game source files here
 )
 
