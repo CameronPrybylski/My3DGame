@@ -10,11 +10,3 @@ PlayerInBattle::~PlayerInBattle()
 {
 }
 
-void PlayerInBattle::OnEvent(const Input &input)
-{
-    if(input.IsKeyDown("SPACE") && !IsMoving())
-    {
-        this->attacking = true;
-    }
-}
-

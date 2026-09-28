@@ -10,8 +10,8 @@ public:
 
 
     void OnEvent(const Input& input) override;
-    void Update(const Input& input, float dt) override;
-    void Render(Renderer& renderer, const Camera& camera) override;
+    virtual void Update(const Input& input, float dt) override;
+    virtual void Render(Renderer& renderer, const Camera& camera) override;
     void OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt) override;
 
     bool mainCh = false;

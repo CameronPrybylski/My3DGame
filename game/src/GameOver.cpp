@@ -14,6 +14,8 @@ GameOver::~GameOver()
 
 void GameOver::Init()
 {
+    objectList.clear();
+    objectMap.clear();
     std::ifstream file(root + loadFilePath);
     if(!file.is_open())
     {
@@ -37,7 +39,7 @@ void GameOver::Init()
                     glm::vec3 position = glm::vec3(obj["position"][0],obj["position"][1], obj["position"][2]);
                     glm::vec4 color = glm::vec4(obj["color"][0],obj["color"][1], obj["color"][2], obj["color"][3]);
                     std::string fontPath = root + (std::string)obj["fontPath"];
-                    std::shared_ptr<StringText> gameOverText = std::make_shared<StringText>(obj["text"], position, color, fontPath, obj["fontSize"]);
+                    std::shared_ptr<StringText> gameOverText = std::make_shared<StringText>(obj["text"], position, glm::vec3(0.0f), color, fontPath, obj["fontSize"]);
                     lookAt = (gameOverText->GetEndPosition() - gameOverText->transform.position);
                     lookAt /= 2;
                     go = gameOverText;

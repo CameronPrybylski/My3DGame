@@ -4,6 +4,7 @@
 
 class PlayerInBattle;
 class EnemyInBattle;
+class Menu;
 
 class Battle : public Scene {
 
@@ -17,6 +18,7 @@ public:
     void LoadPhysics(PhysicsSystem& physics) override;
     void OnEvent(const Input& input) override;
     void OnUpdate(const Input& input, PhysicsSystem& physics, float dt) override;
+    virtual void DrawObjects(Renderer& renderer) override;
 
     virtual void HandleAttackTurn();
     virtual void AnimateIntro();
@@ -27,11 +29,14 @@ protected:
 
     std::shared_ptr<PlayerInBattle> player;
     std::vector<std::shared_ptr<EnemyInBattle>> enemies;
+    std::shared_ptr<Menu> menu;
     
     glm::vec3 cameraAnimationChange;
     int selectedEnemy = 0;
     bool playerTurn = true;
-    bool introAnimation = true;
+    bool introAnimation = false;
+
+    Camera camera2D;
 
 
 };

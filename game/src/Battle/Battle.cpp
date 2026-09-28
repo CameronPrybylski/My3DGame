@@ -2,6 +2,7 @@
 #include <Game/Battle/PlayerInBattle.h>
 #include <Game/Battle/EnemyInBattle.h>
 #include <Game/Cube.h>
+#include <Game/Menu.h>
 
 Battle::Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath) : Scene(screenWidth, screenHeight), 
     root(root), loadFilePath(loadFilePath)
@@ -86,6 +87,13 @@ void Battle::LoadBattle()
                     std::shared_ptr<Cube> cube = std::make_shared<Cube>(name, position, scale, color, mass, isStatic);
                     gameObj = cube;
                 }
+                else if(object["type"] == "menu")
+                {
+                    glm::vec3 letterRotation = glm::vec3(-30.0f, 180.0f, 0.0f);
+                    std::shared_ptr<Menu> menu = std::make_shared<Menu>(name, position, rotation, scale, color, mass, isStatic, posOffset, letterRotation);
+                    this->menu = menu;
+                    gameObj = menu;
+                }
                 AddObject(name, gameObj);
             }
         }
@@ -98,6 +106,8 @@ void Battle::LoadBattle()
                     glm::vec3 playerPosition = glm::vec3{param["playerPosition"][0], param["playerPosition"][1], param["playerPosition"][2]};
                     camera.Create(0.0f, screenWidth, 0.0f, screenHeight, param["minZ"], param["maxZ"], param["distanceFromPlayer"], playerPosition);
                     cameraOffSet = glm::vec3(param["offset"][0], param["offset"][1], param["offset"][2]);
+                    camera2D.SetOrthoProjMat(0.0f, screenWidth, 0.0f, screenHeight, 0.0f, 1.0f);
+                    camera2D.OnUpdate(glm::vec3(0.0f));
                 }
                 else if(param["type"] == "lightPos")
                 {
@@ -157,6 +167,23 @@ void Battle::OnEvent(const Input &input)
     {
         EndScene("level");
     }
+
+    if(input.IsKeyDown("L"))
+    {
+        camera.Update(player->transform.position, glm::vec3(0.0f), 1.0f, 0.0f, 0.0f);
+    }
+    else if(input.IsKeyDown("J"))
+    {
+        camera.Update(player->transform.position, glm::vec3(0.0f), -1.0f, 0.0f, 0.0f);
+    }
+    if(input.IsKeyDown("I"))
+    {
+        camera.Update(player->transform.position, glm::vec3(0.0f), 0.0f, 0.0f, -5.0f);
+    }
+    else if(input.IsKeyDown("K"))
+    {
+        camera.Update(player->transform.position, glm::vec3(0.0f), 0.0f, 0.0f, 5.0f);
+    }
 }
 
 void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
@@ -172,12 +199,29 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     Scene::OnUpdate(input, physics, dt);
    
     std::vector<CollisionEvent> collisions = physics.Update(dt);
-    
+
+    if(menu->GetMove() == "attack" && !player->IsMoving())
+    {
+        player->SetAttacking(true);
+    }
+    menu->SetMove("");
     if(!player->IsMoving() && !enemies[selectedEnemy]->IsMoving())
     {
         HandleAttackTurn();
     }
 
+}
+
+void Battle::DrawObjects(Renderer &renderer)
+{
+    for(auto& obj : objectList)
+    {
+        if(obj->name != "menu")
+        {
+            obj->Render(renderer, camera);
+        }
+    }
+    menu->Render(renderer, camera2D);
 }
 
 void Battle::HandleAttackTurn()
@@ -238,6 +282,9 @@ void Battle::AnimateIntro()
     if(cameraAnimationChange.x >= 360.0f)
     {
         introAnimation = false;
+        std::shared_ptr<GameObject> gameObj = menu;
+        gameObj->lightPos = this->lightPos;
+        AddObject(menu->name, gameObj);
     }
     else
     {

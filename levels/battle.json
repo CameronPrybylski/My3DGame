@@ -7,7 +7,7 @@
             "type" : "player",
             "position" : [650.0, 355.5, 10.0],
             "scale" : [1.0, 1.0, 1.0],
-            "rotation" : [180.0, 130.0, 0.0],
+            "rotation" : [180.0, 225.0, 0.0],
             "hitBoxScaleMulti" : [0.001, 0.001, 0.001],
             "color" : [0.0, 0.0, 0.0, 0.0],
             "mass" : 10.0,
@@ -85,6 +85,30 @@
             "mass" : 100.0,
             "posOffset" : [0.0, 0.0, 0.0],
             "isStatic" : true
+        },
+        {
+            "name" : "menu",
+            "gltf" : "",
+            "texturesFilePath" : "",
+            "type" : "menu",
+            "position" : [533.5, 150.0, 0.0],
+            "rotation" : [0.0, 0.0, 0.0],
+            "textRotation" : [20.0, 30.0, 0.0],
+            "scale" : [900.0, 150.0, 1.0],
+            "color" : [0.2, 0.3, 0.7, 0.5],
+            "mass" : 100.0,
+            "posOffset" : [0.0, 0.0, 0.0],
+            "isStatic" : true,
+            "menuItems" : [
+                {
+                    "action" : "attack",
+                    "text" : "Attack"
+                },
+                {
+                    "action" : "",
+                    "text" : "Przybylski"
+                }
+            ]
         }
     ],
     "levelParams" : [

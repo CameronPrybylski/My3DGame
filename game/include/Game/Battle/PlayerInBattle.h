@@ -9,7 +9,5 @@ public:
     glm::vec3 scale, glm::vec4 color, float mass, bool isStatic, int hp, int damageOutput);
     ~PlayerInBattle();
 
-    void OnEvent(const Input& input) override;
-
 
 };
