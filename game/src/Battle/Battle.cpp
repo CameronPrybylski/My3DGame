@@ -3,6 +3,9 @@
 #include <Game/Battle/EnemyInBattle.h>
 #include <Game/Cube.h>
 #include <Game/Menu.h>
+#include <Engine/Scene/StringText.h>
+
+#include <random>
 
 Battle::Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath) : Scene(screenWidth, screenHeight), 
     root(root), loadFilePath(loadFilePath)
@@ -90,7 +93,18 @@ void Battle::LoadBattle()
                 else if(object["type"] == "menu")
                 {
                     glm::vec3 letterRotation = glm::vec3(-30.0f, 180.0f, 0.0f);
-                    std::shared_ptr<Menu> menu = std::make_shared<Menu>(name, position, rotation, scale, color, mass, isStatic, posOffset, letterRotation);
+                    std::shared_ptr<Menu> menu = std::make_shared<Menu>(name, position, rotation, scale, color, mass, isStatic);
+                    for(auto menuItem : object["menuItems"])
+                    {
+                        std::string text = menuItem["text"];
+                        glm::vec4 fontColor = glm::vec4(menuItem["fontColor"][0], menuItem["fontColor"][1], menuItem["fontColor"][2], menuItem["fontColor"][3]);
+                        std::string fontPath = menuItem["fontPath"];
+                        fontPath = root + fontPath;
+                        int fontSize = menuItem["fontSize"];
+                        glm::vec3 textPosition = glm::vec3(menuItem["textPosition"][0], menuItem["textPosition"][1], menuItem["textPosition"][2]);
+                        std::shared_ptr<StringText> textItem = std::make_shared<StringText>(text, textPosition, rotation, fontColor, fontPath, fontSize, glm::vec3(0.0f));
+                        menu->AddMenuItem(textItem, menuItem["action"]);
+                    }
                     this->menu = menu;
                     gameObj = menu;
                 }
@@ -196,6 +210,7 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     {
         EndScene("level");
     }
+
     Scene::OnUpdate(input, physics, dt);
    
     std::vector<CollisionEvent> collisions = physics.Update(dt);
@@ -216,7 +231,7 @@ void Battle::DrawObjects(Renderer &renderer)
 {
     for(auto& obj : objectList)
     {
-        if(obj->name != "menu")
+        if(obj != menu)
         {
             obj->Render(renderer, camera);
         }
@@ -240,7 +255,14 @@ void Battle::HandleAttackTurn()
     }
     else
     {
-        attacker = enemies[selectedEnemy];
+        if(attackingEnemy < 0)
+        {
+            std::random_device rd; 
+            std::mt19937 gen(rd()); 
+            std::uniform_int_distribution<int> distrib(0, enemies.size() - 1); 
+            attackingEnemy = distrib(gen);
+        }
+        attacker = enemies[attackingEnemy];
         attackee = player;
     }
     if(attacker->GetAttackPosition() != nullDirection)
@@ -263,6 +285,7 @@ void Battle::HandleAttackTurn()
             }
         }
         attacker->ReturnToStart();
+        attackingEnemy = -1;
         this->playerTurn = !this->playerTurn;
     }
     else
