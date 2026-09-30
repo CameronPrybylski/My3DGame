@@ -220,7 +220,7 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
         player->SetAttacking(true);
     }
     menu->SetMove("");
-    if(!player->IsMoving() && !enemies[selectedEnemy]->IsMoving())
+    if((!player->IsMoving() && attackingEnemy >= 0 && !enemies[attackingEnemy]->IsMoving()))
     {
         HandleAttackTurn();
     }
@@ -239,6 +239,14 @@ void Battle::DrawObjects(Renderer &renderer)
     menu->Render(renderer, camera2D);
 }
 
+void Battle::SelectAttackingEnemy()
+{
+    std::random_device rd; 
+    std::mt19937 gen(rd()); 
+    std::uniform_int_distribution<int> distrib(0, enemies.size() - 1); 
+    attackingEnemy = distrib(gen);
+}
+
 void Battle::HandleAttackTurn()
 {
     glm::vec3 nullDirection = glm::vec3(0.0f);
@@ -252,16 +260,10 @@ void Battle::HandleAttackTurn()
     {
         attacker = player;
         attackee = enemies[selectedEnemy];
+        SelectAttackingEnemy();
     }
     else
     {
-        if(attackingEnemy < 0)
-        {
-            std::random_device rd; 
-            std::mt19937 gen(rd()); 
-            std::uniform_int_distribution<int> distrib(0, enemies.size() - 1); 
-            attackingEnemy = distrib(gen);
-        }
         attacker = enemies[attackingEnemy];
         attackee = player;
     }
@@ -285,7 +287,6 @@ void Battle::HandleAttackTurn()
             }
         }
         attacker->ReturnToStart();
-        attackingEnemy = -1;
         this->playerTurn = !this->playerTurn;
     }
     else
