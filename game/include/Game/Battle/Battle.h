@@ -33,11 +33,12 @@ protected:
     
     glm::vec3 cameraAnimationChange;
     int selectedEnemy = 0;
-    int attackingEnemy = -1;
+    int attackingEnemy = 0;
     bool playerTurn = true;
     bool introAnimation = false;
 
     Camera camera2D;
 
+    virtual void SelectAttackingEnemy();
 
 };
