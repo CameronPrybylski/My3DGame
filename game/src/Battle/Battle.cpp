@@ -236,7 +236,8 @@ void Battle::DrawObjects(Renderer &renderer)
             obj->Render(renderer, camera);
         }
     }
-    menu->Render(renderer, camera2D);
+    if(!introAnimation)
+        menu->Render(renderer, camera2D);
 }
 
 void Battle::SelectAttackingEnemy()

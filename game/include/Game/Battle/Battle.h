@@ -35,7 +35,7 @@ protected:
     int selectedEnemy = 0;
     int attackingEnemy = 0;
     bool playerTurn = true;
-    bool introAnimation = false;
+    bool introAnimation = true;
 
     Camera camera2D;
 
