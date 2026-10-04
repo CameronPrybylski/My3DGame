@@ -15,6 +15,11 @@ Menu::~Menu()
 
 void Menu::AddMenuItem(std::shared_ptr<StringText> text, std::string action)
 {
+    if(menuItems.empty())
+    {
+        glm::vec4 highlightColor = glm::vec4(1.0f,0.0f,0.0f,1.0f);
+        text->ChangeTextColor(highlightColor);
+    }
     menuItems.push_back(text);
     menuItemsMoves[text] = action;
 }
