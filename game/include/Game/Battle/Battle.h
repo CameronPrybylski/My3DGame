@@ -9,7 +9,7 @@ class Menu;
 class Battle : public Scene {
 
 public:
-    Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath);
+    Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::string levelJsonPath);
     ~Battle();
 
     void Init() override;
@@ -26,6 +26,7 @@ public:
 protected:
     std::string root;
     std::string loadFilePath;
+    std::string levelJsonPath;
 
     std::shared_ptr<PlayerInBattle> player;
     std::vector<std::shared_ptr<EnemyInBattle>> enemies;
@@ -41,4 +42,5 @@ protected:
 
     virtual void SelectAttackingEnemy();
 
+    virtual void RemoveEnemy();
 };

@@ -7,8 +7,8 @@
 
 #include <random>
 
-Battle::Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath) : Scene(screenWidth, screenHeight), 
-    root(root), loadFilePath(loadFilePath)
+Battle::Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::string levelJsonPath) : Scene(screenWidth, screenHeight), 
+    root(root), loadFilePath(loadFilePath), levelJsonPath(levelJsonPath)
 {
     Init();
 }
@@ -131,6 +131,10 @@ void Battle::LoadBattle()
                 {
                     this->gravity = glm::vec3(param["gravity"][0], param["gravity"][1], param["gravity"][2]);
                 }
+                else if(param["type"] == "nextScene")
+                {
+                    this->nextScene = param["nextScene"];
+                }
             }
         }
     }
@@ -208,6 +212,7 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     }
     if(enemies.empty())
     {
+        RemoveEnemy();
         EndScene("level");
     }
 
@@ -218,6 +223,10 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     if(menu->GetMove() == "attack" && !player->IsMoving())
     {
         player->SetAttacking(true);
+    }
+    else if(menu->GetMove() == "retreat")
+    {
+        EndScene(nextScene);
     }
     menu->SetMove("");
     if((!player->IsMoving() && attackingEnemy >= 0 && !enemies[attackingEnemy]->IsMoving()))
@@ -285,6 +294,7 @@ void Battle::HandleAttackTurn()
                 {
                     enemies[selectedEnemy]->SetHighLightedColor();
                 }
+                SelectAttackingEnemy();
             }
         }
         attacker->ReturnToStart();
@@ -316,4 +326,40 @@ void Battle::AnimateIntro()
         camera.Update(player->transform.position, glm::vec3(0.0f,0.0f,0.0f), 1.0f, 0.0f, 0.0f);
         cameraAnimationChange.x += 1.0f;
     }
+}
+
+void Battle::RemoveEnemy()
+{
+    std::ifstream loadFile(root + levelJsonPath);
+    if(!loadFile.is_open())
+    {
+        std::cerr << "Could not load file: " << root + levelJsonPath << std::endl;
+        return;
+    }
+
+    nlohmann::json j;
+    loadFile >> j;
+    for(auto& entry : j.items())
+    {
+        for(auto& obj : entry.value())
+        {
+            if(obj["type"] == "enemy")
+            {
+                std::string battle = obj["battle"];
+                if(battle == sceneName)
+                {
+                    obj["alive"] = false;
+                }
+            }
+        }
+    }
+    loadFile.close();
+    std::ofstream loadFileOut(root + levelJsonPath);
+    if(!loadFileOut.is_open())
+    {
+        std::cerr << "Could not load file: " << root + levelJsonPath << std::endl;
+        return;
+    }
+    loadFileOut << j;
+    loadFileOut.close();
 }
