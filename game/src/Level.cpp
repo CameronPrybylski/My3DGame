@@ -24,6 +24,7 @@ void Level::LoadLevel()
 
     objectList.clear();
     objectMap.clear();
+    enemies.clear();
 
     std::ifstream file(root + loadFilePath);
     if(!file.is_open())
@@ -82,6 +83,10 @@ void Level::LoadLevel()
                     }
                     else if(obj["type"] == "enemy")
                     {
+                        if(obj["alive"] == false)
+                        {
+                            continue;
+                        }
                         std::string path = root + (std::string)obj["gltf"];
                         objectLoader.LoadGLTF(path, path, true);
                         submeshes = objectLoader.GetSubMeshes();
@@ -91,6 +96,7 @@ void Level::LoadLevel()
                         std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(name, submeshes, root + std::string(obj["texturesFilePath"]), position, scale, color, mass, isStatic, maxDistance, velocity, direction, obj["hp"]);
                         enemy->SetTextures(objectLoader.GetTexturesGLTF());
                         enemy->SetRendPosOffSet(posOffset);
+                        enemy->SetBattle(obj["battle"]);
                         enemies[name] = enemy;
                         gameObj = enemy;
                     }
@@ -131,9 +137,7 @@ void Level::LoadLevel()
             }
         }
     }
-    glm::vec3 playerCubeScale = glm::vec3(player->transform.scale.x * 0.125f, player->transform.scale.y * 0.5f, player->transform.scale.z * 0.125f);
 
-    playerCube = std::make_shared<Cube>("cubePlayer", player->transform.position, playerCubeScale, glm::vec4(1.0f, 1.0f, 1.0f, 0.3f), 1.0f, false);
     leftScreenEdge = 0.0f;
     rightScreenEdge = screenWidth;
     bottomScreenEdge = 0.0f;
@@ -230,10 +234,6 @@ void Level::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     
     Scene::OnUpdate(input, physics, dt);
 
-    playerCube->transform.position = player->transform.position;
-    playerCube->hitBox.position = player->hitBox.position;
-    playerCube->transform.position.y += 75.0f;
-    playerCube->Update(input, dt);
     UpdateCamera(input, dt);
 
 }
@@ -244,7 +244,6 @@ void Level::DrawObjects(Renderer& renderer)
     {
         obj->Render(renderer, camera);
     }
-    playerCube->Render(renderer, camera);
 }
 
 void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
@@ -265,7 +264,6 @@ void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 
 void Level::EnemyPlayerCollision(std::string body1Name, std::string body2Name, glm::vec3 body1CollNorm, glm::vec3 body2CollNorm)
 {
-    EndScene("battle");
     std::shared_ptr<Enemy> enemy;
     glm::vec3 playerCollisionNormal;
     if(body1Name == "player")
@@ -278,19 +276,8 @@ void Level::EnemyPlayerCollision(std::string body1Name, std::string body2Name, g
         enemy = enemies.at(body1Name);
         playerCollisionNormal = body2CollNorm;
     }
-    if(playerCollisionNormal.y == 1)
-    {
-        enemy->TakeDamage(1);
-    }
-    else
-    {
-        player->TakeDamage(1);
-        player->rigidBody.velocity = glm::vec3(0.0f,0.0f,0.0f);
-        float speed = 500.0f;
-        player->rigidBody.velocity.y = speed;
-        player->rigidBody.velocity.x = speed * playerCollisionNormal.x;
-        player->rigidBody.velocity.z = speed * playerCollisionNormal.z;
-    }
+    std::string battle = enemy->GetBattle();
+    EndScene(battle);
 }
 
 void Level::UpdateCamera(const Input& input, float dt)

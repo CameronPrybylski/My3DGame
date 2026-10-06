@@ -16,6 +16,10 @@ public:
     void TakeDamage(int damage){hp -= damage;}
     bool IsAlive(){return hp > 0;}
 
+    std::string GetBattle(){return this->battle;}
+    void SetBattle(std::string battle){this->battle = battle;}
+
 protected:
     int hp;
+    std::string battle = "";
 };

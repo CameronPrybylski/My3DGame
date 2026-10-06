@@ -14,7 +14,7 @@
             "posOffset" : [0.0, 0.0, 0.0],
             "isStatic" : false,
             "hp" : 10,
-            "damageOutput" : 10,
+            "damageOutput" : 100,
             "flipYZ" : true
         },
         {
@@ -109,8 +109,8 @@
                     "textPosition" : [200.0, 200.0, 0.0]
                 },
                 {
-                    "action" : "",
-                    "text" : "Przybylski",
+                    "action" : "retreat",
+                    "text" : "Run",
                     "fontSize" : 10,
                     "fontPath" : "/fonts/OpenSans-Bold.ttf",
                     "fontColor" : [0.0, 0.0, 0.0, 1.0],
@@ -135,6 +135,10 @@
         {
             "type" : "lightPos",
             "lightPos" : [-500.0, 2000.0, 1000.0]
+        },
+        {
+            "type" : "nextScene",
+            "nextScene" : "level"
         }
     ]
 }
