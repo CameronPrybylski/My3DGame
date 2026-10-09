@@ -4,8 +4,11 @@
 #include <Game/NPC.h>
 #include <Game/Enemy.h>
 #include <Game/Object.h>
+#include <Game/Battle/Battle.h>
+#include <Game/Battle/BattleManager.h>
 
-Level::Level(float screenWidth, float screenHeight, std::string root, std::string loadFilePath) : Scene(screenWidth, screenHeight), root(root), loadFilePath(loadFilePath)
+
+Level::Level(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::shared_ptr<BattleManager> battleManager) : Scene(screenWidth, screenHeight), root(root), loadFilePath(loadFilePath), battleManager(battleManager)
 {
     Init();
 }
@@ -277,7 +280,50 @@ void Level::EnemyPlayerCollision(std::string body1Name, std::string body2Name, g
         playerCollisionNormal = body2CollNorm;
     }
     std::string battle = enemy->GetBattle();
-    EndScene(battle);
+    if(battleManager->HasBattle(battle))
+    {
+        battleManager->GetBattle(battle)->SetEnemyName(enemy->name);
+        SetPlayerPosition();
+        EndScene(battle);
+    }
+    else
+    {
+        std::cerr << "Battle: " << battle << " does not exist" << std::endl;
+    }
+}
+
+void Level::SetPlayerPosition()
+{
+    std::ifstream file(root + loadFilePath);
+    if(!file.is_open())
+    {
+        std::cerr << "Issue opening: " << loadFilePath;
+    }
+    nlohmann::json j;
+    file >> j;
+    file.close();
+    for(auto& entry : j.items())
+    {
+        if(entry.key() == "objects")
+        {
+            for(auto& obj : entry.value())
+            {
+                if(obj["name"] == player->name)
+                {
+                    for(int i = 0; i < 3; ++i) {
+                        obj["position"][i] = player->transform.position[i];
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    std::ofstream outFile(root + loadFilePath);
+    if(!outFile.is_open()) {
+        std::cerr << "Cannot write to file: " + loadFilePath;
+    }
+    outFile << std::setw(4) << j;
+    outFile.close();
 }
 
 void Level::UpdateCamera(const Input& input, float dt)

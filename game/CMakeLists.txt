@@ -12,6 +12,7 @@ add_executable(My3DGame
     src/Enemy.cpp
     src/GameOver.cpp
     src/Battle/Battle.cpp
+    src/Battle/BattleManager.cpp
     src/Battle/EnemyInBattle.cpp
     src/Battle/PlayerInBattle.cpp
     src/Battle/ActorInBattle.cpp

@@ -5,6 +5,7 @@
 class PlayerInBattle;
 class EnemyInBattle;
 class Menu;
+class Application;
 
 class Battle : public Scene {
 
@@ -22,17 +23,20 @@ public:
 
     virtual void HandleAttackTurn();
     virtual void AnimateIntro();
+    
+    void SetEnemyName(std::string enemyName){this->enemyName = enemyName;}
 
 protected:
     std::string root;
     std::string loadFilePath;
     std::string levelJsonPath;
+    std::string enemyName = "";
 
     std::shared_ptr<PlayerInBattle> player;
     std::vector<std::shared_ptr<EnemyInBattle>> enemies;
     std::shared_ptr<Menu> menu;
     
-    glm::vec3 cameraAnimationChange;
+    glm::vec3 cameraAnimationChange = glm::vec3(0.0f);
     int selectedEnemy = 0;
     int attackingEnemy = 0;
     bool playerTurn = true;

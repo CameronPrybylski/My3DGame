@@ -27,7 +27,7 @@ void Battle::LoadBattle()
     objectList.clear();
     objectMap.clear();
     enemies.clear();
-    player.reset();
+    introAnimation = true;
     std::ifstream loadFile(root + loadFilePath);
     if(!loadFile.is_open())
     {
@@ -139,12 +139,21 @@ void Battle::LoadBattle()
         }
     }
     player->lightPos = this->lightPos;
-    this->cameraAnimationChange = glm::vec3(0.0f);
+    this->cameraAnimationChange.x = 0.0f;
+    if(cameraAnimationChange.y > cameraOffSet.y)
+    {
+        cameraOffSet.y = 0.0f;
+    }
+    else
+    {
+        this->cameraAnimationChange.y += cameraOffSet.y;
+    }
     camera.Update(player->transform.position, glm::vec3(0.0f,0.0f,0.0f), cameraOffSet.x, cameraOffSet.y, cameraOffSet.z);
     
     if(!enemies.empty())
     {
         enemies[selectedEnemy]->SetHighLightedColor();
+        SelectAttackingEnemy();
     }    
 }
 
@@ -220,7 +229,7 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
    
     std::vector<CollisionEvent> collisions = physics.Update(dt);
 
-    if(menu->GetMove() == "attack" && !player->IsMoving())
+    if(menu->GetMove() == "attack" && !player->IsMoving() && attackingEnemy >= 0 && !enemies[attackingEnemy]->IsMoving())
     {
         player->SetAttacking(true);
     }
@@ -337,18 +346,19 @@ void Battle::RemoveEnemy()
         return;
     }
 
-    nlohmann::json j;
+    nlohmann::ordered_json j;
     loadFile >> j;
     for(auto& entry : j.items())
     {
         for(auto& obj : entry.value())
         {
-            if(obj["type"] == "enemy")
+            if(obj["type"] == "enemy" && obj["name"] == this->enemyName)
             {
                 std::string battle = obj["battle"];
                 if(battle == sceneName)
                 {
                     obj["alive"] = false;
+                    break;
                 }
             }
         }
@@ -360,6 +370,6 @@ void Battle::RemoveEnemy()
         std::cerr << "Could not load file: " << root + levelJsonPath << std::endl;
         return;
     }
-    loadFileOut << j;
+    loadFileOut << std::setw(4) << j;
     loadFileOut.close();
 }

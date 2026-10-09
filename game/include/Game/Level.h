@@ -5,11 +5,14 @@
 class Cube;
 class Player;
 class Enemy;
+class Battle;
+class Application;
+class BattleManager;
 
 class Level : public Scene {
 
 public:
-    Level(float screenWidth, float screenHeight, std::string root, std::string loadFilePath);
+    Level(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::shared_ptr<BattleManager> battleManager);
     ~Level();
 
     void Init() override;
@@ -23,13 +26,13 @@ public:
 
     void UpdateCamera(const Input& input, float dt);
     
-
 protected:
     std::string root;
     std::string loadFilePath;
     std::shared_ptr<Player> player;
     std::shared_ptr<Cube> playerCube;
     std::map<std::string, std::shared_ptr<Enemy>> enemies;
+    std::map<std::string, std::shared_ptr<Battle>> battles;
     bool cameraRight = false;
     bool cameraLeft = false;
     bool cameraUp = false;
@@ -38,6 +41,9 @@ protected:
     bool cameraAway = false;
     float angle = 0.0f;
 
+    std::shared_ptr<BattleManager> battleManager;
+
     void EnemyPlayerCollision(std::string body1Name, std::string body2Name, glm::vec3 body1CollNorm, glm::vec3 body2CollNorm);
+    void SetPlayerPosition();
 
 };
