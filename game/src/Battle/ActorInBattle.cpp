@@ -1,7 +1,7 @@
 #include <Game/Battle/ActorInBattle.h>
 
-ActorInBattle::ActorInBattle(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, 
-    glm::vec3 position, glm::vec3 scale, glm::vec4 color, float mass, bool isStatic, int hp, int damageOutput) : TexturedObject(name,submeshes,texturesFilePath,position,scale,color,mass,isStatic), hp(hp), damageOutput(damageOutput)
+ActorInBattle::ActorInBattle(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, 
+    glm::vec3 position, glm::vec3 scale, glm::vec4 color, float mass, bool isStatic, int hp, int damageOutput) : TexturedObject(name,submeshes,position,scale,color,mass,isStatic), hp(hp), damageOutput(damageOutput)
 {
     attackToPosition = glm::vec3(0.0f);
     startPosition = position;

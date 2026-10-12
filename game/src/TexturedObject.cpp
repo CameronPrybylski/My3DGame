@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <Engine/Renderer/Texture3D.h>
 
-TexturedObject::TexturedObject(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, glm::vec3 position, 
+TexturedObject::TexturedObject(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, glm::vec3 position, 
         glm::vec3 scale, glm::vec4 color, float mass, bool isStatic)
 {
     mesh = std::make_shared<ObjectMesh>();
@@ -18,7 +18,6 @@ TexturedObject::TexturedObject(std::string name, std::vector<std::shared_ptr<Mes
     hitBox = transform;
     this->color = color;
     this->name = name;
-    this->texturesFilePath = texturesFilePath;
 }
 
 TexturedObject::~TexturedObject()
@@ -61,15 +60,4 @@ void TexturedObject::Render(Renderer& renderer, const Camera& camera)
 void TexturedObject::SetVertInd(std::vector<float> vert, std::vector<unsigned int> ind)
 {
     mesh->SetVertTextInd(vert, ind);
-}
-
-void TexturedObject::SetMaterialMap(std::map<std::string, std::shared_ptr<Material>> materialMap)
-{
-    this->materialMap = materialMap;
-    std::map<std::string, std::shared_ptr<Material>>::iterator materialItr = materialMap.begin();
-    for(; materialItr != materialMap.end(); ++materialItr)
-    {
-        if(!materialItr->second->GetMapKd().empty())
-            texturesMap[materialItr->first].Create(texturesFilePath + materialItr->second->GetMapKd());
-    }
 }

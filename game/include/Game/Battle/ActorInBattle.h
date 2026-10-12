@@ -5,7 +5,7 @@
 class ActorInBattle : public TexturedObject {
 
 public:
-    ActorInBattle(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, glm::vec3 position, 
+    ActorInBattle(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, glm::vec3 position, 
     glm::vec3 scale, glm::vec4 color, float mass, bool isStatic, int hp, int damageOutput);
     ~ActorInBattle();
 
