@@ -6,6 +6,7 @@
 #include <Game/Object.h>
 #include <Game/Battle/Battle.h>
 #include <Game/Battle/BattleManager.h>
+#include <Game/PassageWay.h>
 
 
 Level::Level(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::shared_ptr<BattleManager> battleManager) : Scene(screenWidth, screenHeight), root(root), loadFilePath(loadFilePath), battleManager(battleManager)
@@ -60,12 +61,22 @@ void Level::LoadLevel()
                     rotation = glm::vec3(obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]);
                 glm::vec3 hitBoxScale = glm::vec3(scale.x * hitBoxScaleMulti.x, scale.y * hitBoxScaleMulti.y, scale.z * hitBoxScaleMulti.z);
                 std::shared_ptr<GameObject> gameObj;
-                if(obj["texturesFilePath"] == "" && obj["type"] == "object")
+                if(obj["texturesFilePath"] == "" && (obj["type"] == "object" || obj["type"] == "passageWay"))
                 {
                     std::string filePath = root + std::string(obj["gltf"]);
                     objectLoader.LoadGLTF(filePath, filePath, obj["flipYZ"]);
                     std::vector<std::shared_ptr<Mesh>> subMeshes = objectLoader.GetSubMeshes();
-                    std::shared_ptr<TexturedObject> object = std::make_shared<TexturedObject>(name, subMeshes, root + "/res/crash_bandicoot/textures", position, scale, color, mass, isStatic);
+                    std::shared_ptr<TexturedObject> object;
+                    if(obj["type"] == "passageWay")
+                    {
+                        std::shared_ptr<PassageWay> passageWay = std::make_shared<PassageWay>(name, subMeshes, root + "/res/crash_bandicoot/textures", position, scale, color, mass, isStatic, obj["nextScene"]);
+                        passageWays[name] = passageWay;
+                        object = passageWay;
+                    }
+                    else
+                    {
+                        object = std::make_shared<TexturedObject>(name, subMeshes, root + "/res/crash_bandicoot/textures", position, scale, color, mass, isStatic);
+                    }
                     object->transform.rotation = glm::vec3(obj["rotation"][0], obj["rotation"][1], obj["rotation"][2]);
                     object->SetTextures(objectLoader.GetTexturesGLTF());
                     object->SetRendPosOffSet(posOffset);
@@ -257,10 +268,16 @@ void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
         std::shared_ptr<GameObject> gameObject2 = objectMap.at(collision.body2.id);
         gameObject1->OnCollision(gameObject2, collision.collisionNormalBody1, dt);
         gameObject2->OnCollision(gameObject1, collision.collisionNormalBody2, dt);
-        if( (enemies.count(collision.body1.id) || enemies.count(collision.body2.id) )&&
-            (gameObject1->name == "player" || gameObject2->name == "player"))
+        if(gameObject1->name == "player" || gameObject2->name == "player")
         {
-            EnemyPlayerCollision(collision.body1.id, collision.body2.id, collision.collisionNormalBody1, collision.collisionNormalBody2);
+            if( enemies.count(collision.body1.id) || enemies.count(collision.body2.id) )
+            {
+                EnemyPlayerCollision(collision.body1.id, collision.body2.id, collision.collisionNormalBody1, collision.collisionNormalBody2);
+            }
+            else if(passageWays.count(collision.body1.id) || passageWays.count(collision.body2.id))
+            {
+                PassageWayTransition(collision);
+            }
         }
     }
 }
@@ -283,6 +300,8 @@ void Level::EnemyPlayerCollision(std::string body1Name, std::string body2Name, g
     if(battleManager->HasBattle(battle))
     {
         battleManager->GetBattle(battle)->SetEnemyName(enemy->name);
+        battleManager->GetBattle(battle)->SetNextScene(sceneName);
+        battleManager->GetBattle(battle)->SetLevelJsonPath(loadFilePath);
         SetPlayerPosition();
         EndScene(battle);
     }
@@ -290,6 +309,18 @@ void Level::EnemyPlayerCollision(std::string body1Name, std::string body2Name, g
     {
         std::cerr << "Battle: " << battle << " does not exist" << std::endl;
     }
+}
+
+void Level::PassageWayTransition(CollisionEvent collision)
+{
+    std::string nextScene;
+    if(collision.body1.id == player->name)
+    {
+        nextScene = passageWays[collision.body2.id]->GetNextScene();
+    } else {
+        nextScene = passageWays[collision.body1.id]->GetNextScene();
+    }
+    EndScene(nextScene);
 }
 
 void Level::SetPlayerPosition()

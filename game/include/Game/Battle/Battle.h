@@ -25,6 +25,7 @@ public:
     virtual void AnimateIntro();
     
     void SetEnemyName(std::string enemyName){this->enemyName = enemyName;}
+    void SetLevelJsonPath(std::string levelJsonPath){this->levelJsonPath = levelJsonPath;}
 
 protected:
     std::string root;

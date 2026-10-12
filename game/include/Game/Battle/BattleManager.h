@@ -15,6 +15,7 @@ public:
     void AddBattle(std::string battleName, std::shared_ptr<Battle> battle);
     bool HasBattle(std::string battleName){return battles.count(battleName) > 0;}
     std::shared_ptr<Battle> GetBattle(std::string battleName);
+    void SetNextScene(std::string battleName, std::string nextScene);
 private:
     std::map<std::string, std::shared_ptr<Battle>> battles;
 };
