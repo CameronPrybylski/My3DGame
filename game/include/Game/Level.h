@@ -8,6 +8,7 @@ class Enemy;
 class Battle;
 class Application;
 class BattleManager;
+class PassageWay;
 
 class Level : public Scene {
 
@@ -33,6 +34,7 @@ protected:
     std::shared_ptr<Cube> playerCube;
     std::map<std::string, std::shared_ptr<Enemy>> enemies;
     std::map<std::string, std::shared_ptr<Battle>> battles;
+    std::map<std::string, std::shared_ptr<PassageWay>> passageWays;
     bool cameraRight = false;
     bool cameraLeft = false;
     bool cameraUp = false;
@@ -45,5 +47,6 @@ protected:
 
     void EnemyPlayerCollision(std::string body1Name, std::string body2Name, glm::vec3 body1CollNorm, glm::vec3 body2CollNorm);
     void SetPlayerPosition();
+    void PassageWayTransition(CollisionEvent collision);
 
 };

@@ -135,10 +135,6 @@
         {
             "type" : "lightPos",
             "lightPos" : [-500.0, 2000.0, 1000.0]
-        },
-        {
-            "type" : "nextScene",
-            "nextScene" : "level"
         }
     ]
 }

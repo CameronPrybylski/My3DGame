@@ -1,0 +1,392 @@
+{
+    "levelParams": [
+        {
+            "distanceFromPlayer": 1000.0,
+            "maxZ": 4000.0,
+            "minZ": 0.1,
+            "playerPosition": [
+                650.0,
+                355.5,
+                0.0
+            ],
+            "type": "camera"
+        },
+        {
+            "gravity": [
+                0.0,
+                -600.0,
+                0.0
+            ],
+            "type": "gravity"
+        },
+        {
+            "lightPos": [
+                -500.0,
+                2000.0,
+                1000.0
+            ],
+            "type": "lightPos"
+        }
+    ],
+    "objects": [
+        {
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "flipYZ": true,
+            "gltf": "/res/kingdom_hearts_riku/scene.gltf",
+            "hitBoxScaleMulti": [
+                15.0,
+                150.0,
+                15.0
+            ],
+            "isStatic": false,
+            "mass": 1.0,
+            "mtl": "",
+            "name": "teapot",
+            "nextScene": "level",
+            "obj": "/res/teapot.obj",
+            "posOffset": [
+                0.0,
+                -75.0,
+                0.0
+            ],
+            "position": [
+                -500.0,
+                1000.0,
+                10.0
+            ],
+            "rotation": [
+                180.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "texturesFilePath": "",
+            "type": "passageWay"
+        },
+        {
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "flipYZ": true,
+            "gltf": "/res/peaches_castle_exterior/scene.gltf",
+            "hitBoxScaleMulti": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "isStatic": false,
+            "mass": 100.0,
+            "mtl": "/res/Peaches-Castle/scene.mtl",
+            "name": "castle",
+            "obj": "/res/Peaches-Castle/scene.obj",
+            "posOffset": [
+                0.0,
+                500.0,
+                0.0
+            ],
+            "position": [
+                1000.0,
+                1000.0,
+                1000.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                10.0,
+                10.0,
+                10.0
+            ],
+            "texturesFilePath": "/res/Peaches-Castle/",
+            "type": "object"
+        },
+        {
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "flipYZ": true,
+            "gltfFile": "/res/cloud_strife/scene.gltf",
+            "gltfPath": "/res/kingdom_hearts_riku/scene.gltf",
+            "hitBoxScaleMulti": [
+                100.0,
+                100.0,
+                100.0
+            ],
+            "hp": 5,
+            "isStatic": false,
+            "mass": 10.0,
+            "mtl": "/res/crash-bandicoot/crashbandicoot.mtl",
+            "name": "player",
+            "obj": "/res/crash-bandicoot/crashbandicoot.obj",
+            "posOffset": [
+                0.0,
+                -50.0,
+                0.0
+            ],
+            "position": [
+                386.26397705078125,
+                405.0,
+                263.3567810058594
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                180.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "texturesFilePath": "/res/crash-bandicoot/",
+            "type": "player"
+        },
+        {
+            "alive": true,
+            "battle": "battle1",
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "direction": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "gltf": "/res/heartless/scene.gltf",
+            "hitBoxScaleMulti": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "hp": 3,
+            "isStatic": false,
+            "mass": 1.0,
+            "maxDistance": 1000.0,
+            "mtl": "/res/scene/scene.mtl",
+            "name": "enemy1",
+            "obj": "/res/scene/scene.obj",
+            "posOffset": [
+                0.0,
+                20.0,
+                0.0
+            ],
+            "position": [
+                650.0,
+                800.0,
+                300.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.6,
+                0.6,
+                0.6
+            ],
+            "texturesFilePath": "/res/scene/",
+            "type": "enemy",
+            "velocity": [
+                1.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "alive": true,
+            "battle": "battle1",
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "direction": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "gltf": "/res/heartless/scene.gltf",
+            "hitBoxScaleMulti": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "hp": 3,
+            "isStatic": false,
+            "mass": 1.0,
+            "maxDistance": 1000.0,
+            "mtl": "/res/scene/scene.mtl",
+            "name": "enemy2",
+            "obj": "/res/scene/scene.obj",
+            "posOffset": [
+                0.0,
+                20.0,
+                0.0
+            ],
+            "position": [
+                350.0,
+                800.0,
+                200.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.6,
+                0.6,
+                0.6
+            ],
+            "texturesFilePath": "/res/scene/",
+            "type": "enemy",
+            "velocity": [
+                1.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "isStatic": false,
+            "mass": 20.0,
+            "mtl": "",
+            "name": "cube",
+            "obj": "",
+            "posOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                500.0,
+                500.0,
+                10.0
+            ],
+            "scale": [
+                100.0,
+                100.0,
+                100.0
+            ],
+            "texturesFilePath": "",
+            "type": "cube"
+        },
+        {
+            "color": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "isStatic": false,
+            "mass": 15.0,
+            "mtl": "",
+            "name": "cube2",
+            "obj": "",
+            "posOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                500.0,
+                650.0,
+                10.0
+            ],
+            "scale": [
+                100.0,
+                100.0,
+                100.0
+            ],
+            "texturesFilePath": "",
+            "type": "cube"
+        },
+        {
+            "color": [
+                0.7,
+                0.0,
+                0.4,
+                0.5
+            ],
+            "isStatic": true,
+            "mass": 100.0,
+            "mtl": "",
+            "name": "cube3",
+            "obj": "",
+            "posOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                500.0,
+                350.0,
+                10.0
+            ],
+            "scale": [
+                3000.0,
+                10.0,
+                3000.0
+            ],
+            "texturesFilePath": "",
+            "type": "cube"
+        },
+        {
+            "color": [
+                0.0,
+                0.0,
+                1.0,
+                1.0
+            ],
+            "isStatic": false,
+            "mass": 1000.0,
+            "mtl": "",
+            "name": "cube4",
+            "obj": "",
+            "posOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                650.0,
+                1200.0,
+                10.0
+            ],
+            "scale": [
+                100.0,
+                200.0,
+                100.0
+            ],
+            "texturesFilePath": "",
+            "type": "cube"
+        }
+    ]
+}

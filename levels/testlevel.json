@@ -6,8 +6,8 @@
             "minZ": 0.1,
             "playerPosition": [
                 650.0,
-                800.0,
-                10.0
+                355.5,
+                0.0
             ],
             "type": "camera"
         },
@@ -47,6 +47,7 @@
             "mass": 1.0,
             "mtl": "",
             "name": "teapot",
+            "nextScene": "level2",
             "obj": "/res/teapot.obj",
             "posOffset": [
                 0.0,
@@ -69,7 +70,7 @@
                 1.0
             ],
             "texturesFilePath": "",
-            "type": "object"
+            "type": "passageWay"
         },
         {
             "color": [
@@ -140,9 +141,9 @@
                 0.0
             ],
             "position": [
-                764.0779418945313,
-                370.0,
-                202.23907470703125
+                633.1832885742188,
+                405.0,
+                248.92771911621094
             ],
             "rotation": [
                 0.0,
@@ -159,7 +160,7 @@
         },
         {
             "alive": true,
-            "battle": "battle2",
+            "battle": "battle1",
             "color": [
                 0.0,
                 0.0,
@@ -213,8 +214,8 @@
             ]
         },
         {
-            "alive": true,
-            "battle" : "battle2",
+            "alive": false,
+            "battle": "battle2",
             "color": [
                 0.0,
                 0.0,

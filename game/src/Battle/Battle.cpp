@@ -131,10 +131,6 @@ void Battle::LoadBattle()
                 {
                     this->gravity = glm::vec3(param["gravity"][0], param["gravity"][1], param["gravity"][2]);
                 }
-                else if(param["type"] == "nextScene")
-                {
-                    this->nextScene = param["nextScene"];
-                }
             }
         }
     }
@@ -192,7 +188,7 @@ void Battle::OnEvent(const Input &input)
 
     if(input.IsKeyDown("X"))
     {
-        EndScene("level");
+        EndScene(nextScene);
     }
 
     if(input.IsKeyDown("L"))
@@ -222,7 +218,7 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     if(enemies.empty())
     {
         RemoveEnemy();
-        EndScene("level");
+        EndScene(nextScene);
     }
 
     Scene::OnUpdate(input, physics, dt);
