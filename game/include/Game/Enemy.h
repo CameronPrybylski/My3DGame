@@ -6,7 +6,7 @@ class Enemy : public NPC
 {
 
 public:
-    Enemy(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, glm::vec3 position, 
+    Enemy(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, glm::vec3 position, 
         glm::vec3 scale, glm::vec4 color, float mass, bool isStatic, float maxDistance, glm::vec3 velocity, glm::vec3 direction, int hp);
     ~Enemy();
 

@@ -2,7 +2,7 @@
     "levelParams": [
         {
             "distanceFromPlayer": 1000.0,
-            "maxZ": 4000.0,
+            "maxZ": 40000.0,
             "minZ": 0.1,
             "playerPosition": [
                 650.0,
@@ -45,10 +45,8 @@
             ],
             "isStatic": false,
             "mass": 1.0,
-            "mtl": "",
             "name": "teapot",
             "nextScene": "level2",
-            "obj": "/res/teapot.obj",
             "posOffset": [
                 0.0,
                 -75.0,
@@ -69,7 +67,6 @@
                 1.0,
                 1.0
             ],
-            "texturesFilePath": "",
             "type": "passageWay"
         },
         {
@@ -80,38 +77,35 @@
                 0.0
             ],
             "flipYZ": true,
-            "gltf": "/res/peaches_castle_exterior/scene.gltf",
+            "gltf": "/res/destiny_islands/scene.gltf",
             "hitBoxScaleMulti": [
-                1.0,
-                1.0,
-                1.0
+                0.0001,
+                0.0001,
+                0.0001
             ],
-            "isStatic": false,
+            "isStatic": true,
             "mass": 100.0,
-            "mtl": "/res/Peaches-Castle/scene.mtl",
             "name": "castle",
-            "obj": "/res/Peaches-Castle/scene.obj",
             "posOffset": [
                 0.0,
-                500.0,
+                2000.0,
                 0.0
             ],
             "position": [
-                1000.0,
-                1000.0,
-                1000.0
+                650.0,
+                350.0,
+                300.0
             ],
             "rotation": [
-                0.0,
+                180.0,
                 0.0,
                 0.0
             ],
             "scale": [
-                10.0,
-                10.0,
-                10.0
+                0.5,
+                0.5,
+                0.5
             ],
-            "texturesFilePath": "/res/Peaches-Castle/",
             "type": "object"
         },
         {
@@ -132,18 +126,16 @@
             "hp": 5,
             "isStatic": false,
             "mass": 10.0,
-            "mtl": "/res/crash-bandicoot/crashbandicoot.mtl",
             "name": "player",
-            "obj": "/res/crash-bandicoot/crashbandicoot.obj",
             "posOffset": [
                 0.0,
                 -50.0,
                 0.0
             ],
             "position": [
-                633.1832885742188,
+                1081.452392578125,
                 405.0,
-                248.92771911621094
+                284.989990234375
             ],
             "rotation": [
                 0.0,
@@ -155,7 +147,6 @@
                 1.0,
                 1.0
             ],
-            "texturesFilePath": "/res/crash-bandicoot/",
             "type": "player"
         },
         {
@@ -182,9 +173,7 @@
             "isStatic": false,
             "mass": 1.0,
             "maxDistance": 1000.0,
-            "mtl": "/res/scene/scene.mtl",
             "name": "enemy1",
-            "obj": "/res/scene/scene.obj",
             "posOffset": [
                 0.0,
                 20.0,
@@ -205,7 +194,6 @@
                 0.6,
                 0.6
             ],
-            "texturesFilePath": "/res/scene/",
             "type": "enemy",
             "velocity": [
                 1.0,
@@ -214,7 +202,7 @@
             ]
         },
         {
-            "alive": false,
+            "alive": true,
             "battle": "battle2",
             "color": [
                 0.0,
@@ -237,9 +225,7 @@
             "isStatic": false,
             "mass": 1.0,
             "maxDistance": 1000.0,
-            "mtl": "/res/scene/scene.mtl",
             "name": "enemy2",
-            "obj": "/res/scene/scene.obj",
             "posOffset": [
                 0.0,
                 20.0,
@@ -260,7 +246,6 @@
                 0.6,
                 0.6
             ],
-            "texturesFilePath": "/res/scene/",
             "type": "enemy",
             "velocity": [
                 1.0,
@@ -277,9 +262,7 @@
             ],
             "isStatic": false,
             "mass": 20.0,
-            "mtl": "",
             "name": "cube",
-            "obj": "",
             "posOffset": [
                 0.0,
                 0.0,
@@ -295,7 +278,6 @@
                 100.0,
                 100.0
             ],
-            "texturesFilePath": "",
             "type": "cube"
         },
         {
@@ -307,9 +289,7 @@
             ],
             "isStatic": false,
             "mass": 15.0,
-            "mtl": "",
             "name": "cube2",
-            "obj": "",
             "posOffset": [
                 0.0,
                 0.0,
@@ -325,7 +305,6 @@
                 100.0,
                 100.0
             ],
-            "texturesFilePath": "",
             "type": "cube"
         },
         {
@@ -337,9 +316,7 @@
             ],
             "isStatic": true,
             "mass": 100.0,
-            "mtl": "",
             "name": "cube3",
-            "obj": "",
             "posOffset": [
                 0.0,
                 0.0,
@@ -355,7 +332,6 @@
                 10.0,
                 3000.0
             ],
-            "texturesFilePath": "",
             "type": "cube"
         },
         {
@@ -367,9 +343,7 @@
             ],
             "isStatic": false,
             "mass": 1000.0,
-            "mtl": "",
             "name": "cube4",
-            "obj": "",
             "posOffset": [
                 0.0,
                 0.0,
@@ -385,7 +359,6 @@
                 200.0,
                 100.0
             ],
-            "texturesFilePath": "",
             "type": "cube"
         }
     ]

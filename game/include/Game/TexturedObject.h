@@ -8,7 +8,7 @@ class Texture3D;
 class TexturedObject : public GameObject
 {
 public:
-    TexturedObject(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, glm::vec3 position, 
+    TexturedObject(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, glm::vec3 position, 
         glm::vec3 scale, glm::vec4 color, float mass, bool isStatic);
     ~TexturedObject();
 
@@ -20,7 +20,6 @@ public:
 
     void SetDirection(float direction){this->direction = direction;}
     void SetVertInd(std::vector<float> vert, std::vector<unsigned int> ind);
-    void SetMaterialMap(std::map<std::string, std::shared_ptr<Material>> materialMap);
     void SetSubMeshes(std::vector<std::shared_ptr<Mesh>> submeshes){this->submeshes = submeshes;}
 
     void SetTextures(std::vector<std::shared_ptr<Texture>> textures){this->textures = textures;}
@@ -33,7 +32,6 @@ protected:
     std::map<std::string, std::shared_ptr<Material>> materialMap;
     std::map<std::string, Texture> texturesMap;
     std::vector<std::shared_ptr<Mesh>> submeshes;
-    std::string texturesFilePath;
     std::vector<std::shared_ptr<Texture>> textures;
 
     float direction = 0.0f;

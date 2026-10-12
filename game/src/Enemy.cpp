@@ -1,8 +1,8 @@
 #include <Game/Enemy.h>
 
-Enemy::Enemy(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, std::string texturesFilePath, glm::vec3 position, 
+Enemy::Enemy(std::string name, std::vector<std::shared_ptr<Mesh>> submeshes, glm::vec3 position, 
         glm::vec3 scale, glm::vec4 color, float mass, bool isStatic, float maxDistance, glm::vec3 velocity, glm::vec3 direction, int hp)
-        : NPC(name, submeshes, texturesFilePath, position, scale, color, mass, isStatic, maxDistance, velocity, direction), hp(hp)
+        : NPC(name, submeshes, position, scale, color, mass, isStatic, maxDistance, velocity, direction), hp(hp)
 {
 
 }

@@ -70,7 +70,7 @@ void Battle::LoadBattle()
                     std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes();
                     if(object["type"] == "player")
                     {
-                        player = std::make_shared<PlayerInBattle>(name,submeshes,"",position,scale,color,mass,isStatic, hp, damageOutput);
+                        player = std::make_shared<PlayerInBattle>(name,submeshes,position,scale,color,mass,isStatic, hp, damageOutput);
                         player->SetTextures(objectLoader.GetTexturesGLTF());
                         player->transform.rotation = rotation;
                         player->SetRendPosOffSet(posOffset);
@@ -78,7 +78,7 @@ void Battle::LoadBattle()
                     }
                     else if(object["type"] == "enemy")
                     {
-                        std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(name,submeshes,"",position,scale,color,mass,isStatic, hp, damageOutput);
+                        std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(name,submeshes,position,scale,color,mass,isStatic, hp, damageOutput);
                         enemy->SetTextures(objectLoader.GetTexturesGLTF());
                         enemy->transform.rotation = rotation;
                         enemies.push_back(enemy);
