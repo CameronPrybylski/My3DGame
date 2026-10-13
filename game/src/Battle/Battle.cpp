@@ -2,13 +2,13 @@
 #include <Game/Battle/PlayerInBattle.h>
 #include <Game/Battle/EnemyInBattle.h>
 #include <Game/Cube.h>
-#include <Game/Menu.h>
+#include <Game/MenuManager.h>
 #include <Engine/Scene/StringText.h>
 
 #include <random>
 
-Battle::Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::string levelJsonPath) : Scene(screenWidth, screenHeight), 
-    root(root), loadFilePath(loadFilePath), levelJsonPath(levelJsonPath)
+Battle::Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::string levelJsonPath, std::shared_ptr<MenuManager> menuManager) : Scene(screenWidth, screenHeight), 
+    root(root), loadFilePath(loadFilePath), levelJsonPath(levelJsonPath), menuManager(menuManager)
 {
     Init();
 }
@@ -93,7 +93,11 @@ void Battle::LoadBattle()
                 else if(object["type"] == "menu")
                 {
                     glm::vec3 letterRotation = glm::vec3(-30.0f, 180.0f, 0.0f);
-                    std::shared_ptr<Menu> menu = std::make_shared<Menu>(name, position, rotation, scale, color, mass, isStatic);
+                    if(menuManager->Contains(name))
+                    {
+                        continue;
+                    }
+                    std::shared_ptr<Menu> rootMenu = std::make_shared<Menu>(name, position, rotation, scale, color, mass, isStatic);
                     for(auto menuItem : object["menuItems"])
                     {
                         std::string text = menuItem["text"];
@@ -103,10 +107,29 @@ void Battle::LoadBattle()
                         int fontSize = menuItem["fontSize"];
                         glm::vec3 textPosition = glm::vec3(menuItem["textPosition"][0], menuItem["textPosition"][1], menuItem["textPosition"][2]);
                         std::shared_ptr<StringText> textItem = std::make_shared<StringText>(text, textPosition, rotation, fontColor, fontPath, fontSize, glm::vec3(0.0f));
-                        menu->AddMenuItem(textItem, menuItem["action"]);
+                        rootMenu->AddMenuItem(textItem, menuItem["action"]);
+                        if(menuItem["action"] == "submenu")
+                        {
+                            std::string newName = name + std::to_string(rootMenu->GetSubMenuCount() + 1);
+                            std::shared_ptr<Menu> submenu = std::make_shared<Menu>(newName, position, rotation, scale, color, mass, isStatic);
+                            for(auto subMenuItem : menuItem["menuItems"])
+                            {
+                                std::string subText = subMenuItem["text"];
+                                glm::vec4 fontColor = glm::vec4(subMenuItem["fontColor"][0], subMenuItem["fontColor"][1], subMenuItem["fontColor"][2], subMenuItem["fontColor"][3]);
+                                std::string fontPath = subMenuItem["fontPath"];
+                                fontPath = root + fontPath;
+                                int fontSize = subMenuItem["fontSize"];
+                                glm::vec3 textPosition = glm::vec3(subMenuItem["textPosition"][0], subMenuItem["textPosition"][1], subMenuItem["textPosition"][2]);
+                                std::shared_ptr<StringText> subTextItem = std::make_shared<StringText>(subText, textPosition, rotation, fontColor, fontPath, fontSize, glm::vec3(0.0f));
+                                submenu->AddMenuItem(subTextItem, subMenuItem["action"]);
+                            }
+                            rootMenu->AddSubMenu(textItem, submenu);
+                            menuManager->AddMenu(submenu->name, submenu);
+                        }
                     }
-                    this->menu = menu;
-                    gameObj = menu;
+                    menuManager->AddMenu(rootMenu->name, rootMenu);
+                    menuManager->SetActiveMenu(rootMenu->name);
+                    continue;
                 }
                 AddObject(name, gameObj);
             }
@@ -163,6 +186,7 @@ void Battle::OnEvent(const Input &input)
     if(introAnimation)
         return;
     
+    menuManager->GetActiveMenu()->OnEvent(input);
     Scene::OnEvent(input);
 
     if(input.IsKeyDown("D") || input.IsKeyDown("A"))
@@ -221,19 +245,36 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
         EndScene(nextScene);
     }
 
+    menuManager->GetActiveMenu()->Update(input, dt);
+
     Scene::OnUpdate(input, physics, dt);
    
     std::vector<CollisionEvent> collisions = physics.Update(dt);
 
-    if(menu->GetMove() == "attack" && !player->IsMoving() && attackingEnemy >= 0 && !enemies[attackingEnemy]->IsMoving())
+    if(menuManager->GetActiveMenu()->GetMove() == "attack" && !player->IsMoving() && attackingEnemy >= 0 && !enemies[attackingEnemy]->IsMoving())
     {
         player->SetAttacking(true);
     }
-    else if(menu->GetMove() == "retreat")
+    else if(menuManager->GetActiveMenu()->GetMove() == "retreat")
     {
         EndScene(nextScene);
     }
-    menu->SetMove("");
+    else if(menuManager->GetActiveMenu()->GetMove() == "submenu")
+    {
+        std::shared_ptr<Menu> activeMenu = menuManager->GetActiveMenu()->GetSubMenu(menuManager->GetActiveMenu()->GetSelectedText());
+        menuManager->SetActiveMenu(activeMenu->name);
+    }
+    else if(menuManager->GetActiveMenu()->GetMove() == "back")
+    {
+        auto previous = menuManager->GetActiveMenu()->GetPreviousMenu();
+
+        if(previous)
+        {
+            std::shared_ptr<Menu> activeMenu = previous;
+            menuManager->SetActiveMenu(activeMenu->name);
+        }
+    }
+    menuManager->GetActiveMenu()->SetMove("");
     if((!player->IsMoving() && attackingEnemy >= 0 && !enemies[attackingEnemy]->IsMoving()))
     {
         HandleAttackTurn();
@@ -245,13 +286,10 @@ void Battle::DrawObjects(Renderer &renderer)
 {
     for(auto& obj : objectList)
     {
-        if(obj != menu)
-        {
-            obj->Render(renderer, camera);
-        }
+        obj->Render(renderer, camera);
     }
     if(!introAnimation)
-        menu->Render(renderer, camera2D);
+        menuManager->GetActiveMenu()->Render(renderer, camera2D);
 }
 
 void Battle::SelectAttackingEnemy()
@@ -322,9 +360,6 @@ void Battle::AnimateIntro()
     if(cameraAnimationChange.x >= 360.0f)
     {
         introAnimation = false;
-        std::shared_ptr<GameObject> gameObj = menu;
-        gameObj->lightPos = this->lightPos;
-        AddObject(menu->name, gameObj);
     }
     else
     {

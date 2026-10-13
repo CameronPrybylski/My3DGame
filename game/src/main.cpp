@@ -4,6 +4,7 @@
 #include <Game/GameOver.h>
 #include <Game/Battle/Battle.h>
 #include <Game/Battle/BattleManager.h>
+#include <Game/MenuManager.h>
 
 #include <iostream>
 
@@ -30,11 +31,12 @@ int main()
         
         //Scene scene;
         std::shared_ptr<BattleManager> battleManager = std::make_shared<BattleManager>();
+        std::shared_ptr<MenuManager> menuManager = std::make_shared<MenuManager>();
         std::shared_ptr<Level> level = std::make_shared<Level>(1067.0f, 800.0f, std::string(root), "/levels/testlevel.json", battleManager);
         std::shared_ptr<Level> level2 = std::make_shared<Level>(1067.0f, 800.0f, std::string(root), "/levels/level2.json", battleManager);
         std::shared_ptr<GameOver> gameOver = std::make_shared<GameOver>(1067.0f, 800.0f, std::string(root), "/levels/gameover.json", "level");
-        std::shared_ptr<Battle> battle = std::make_shared<Battle>(1067.0f, 800.0f, std::string(root), "/levels/battle.json", "/levels/testlevel.json");
-        std::shared_ptr<Battle> battle2 = std::make_shared<Battle>(1067.0f, 800.0f, std::string(root), "/levels/battle2.json", "/levels/testlevel.json");
+        std::shared_ptr<Battle> battle = std::make_shared<Battle>(1067.0f, 800.0f, std::string(root), "/levels/battle.json", "/levels/testlevel.json", menuManager);
+        std::shared_ptr<Battle> battle2 = std::make_shared<Battle>(1067.0f, 800.0f, std::string(root), "/levels/battle2.json", "/levels/testlevel.json", menuManager);
         battleManager->AddBattle("battle1", battle);
         battleManager->AddBattle("battle2", battle2);
         //level->AddBattle("battle1", battle);

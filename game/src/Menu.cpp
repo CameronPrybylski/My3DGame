@@ -24,6 +24,17 @@ void Menu::AddMenuItem(std::shared_ptr<StringText> text, std::string action)
     menuItemsMoves[text] = action;
 }
 
+void Menu::AddSubMenu(std::shared_ptr<StringText> text, std::shared_ptr<Menu> submenu)
+{
+    subMenus[text] = submenu;
+    submenu->previousMenu = shared_from_this();
+}
+
+std::shared_ptr<Menu> Menu::GetPreviousMenu()
+{
+    return previousMenu.lock();
+}
+
 void Menu::OnEvent(const Input& input)
 {
     if(selectedText + 1 < menuItems.size() && input.IsKeyDown("W"))
