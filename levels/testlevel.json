@@ -37,7 +37,7 @@
                 0.0
             ],
             "flipYZ": true,
-            "gltf": "/res/kingdom_hearts_riku/scene.gltf",
+            "gltf": "/res/kingdom_hearts_xemnas/scene.gltf",
             "hitBoxScaleMulti": [
                 15.0,
                 150.0,
@@ -58,7 +58,7 @@
                 10.0
             ],
             "rotation": [
-                180.0,
+                0.0,
                 0.0,
                 0.0
             ],
@@ -133,9 +133,9 @@
                 0.0
             ],
             "position": [
-                1081.452392578125,
+                855.9075927734375,
                 405.0,
-                284.989990234375
+                163.76878356933594
             ],
             "rotation": [
                 0.0,

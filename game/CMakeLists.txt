@@ -18,6 +18,7 @@ add_executable(My3DGame
     src/Battle/ActorInBattle.cpp
     src/Menu.cpp
     src/PassageWay.cpp
+    src/MenuManager.cpp
     # Add your game source files here
 )
 

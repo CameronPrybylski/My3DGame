@@ -4,13 +4,13 @@
 
 class PlayerInBattle;
 class EnemyInBattle;
-class Menu;
+class MenuManager;
 class Application;
 
 class Battle : public Scene {
 
 public:
-    Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::string levelJsonPath);
+    Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::string levelJsonPath, std::shared_ptr<MenuManager> menuManager);
     ~Battle();
 
     void Init() override;
@@ -35,7 +35,7 @@ protected:
 
     std::shared_ptr<PlayerInBattle> player;
     std::vector<std::shared_ptr<EnemyInBattle>> enemies;
-    std::shared_ptr<Menu> menu;
+    std::shared_ptr<MenuManager> menuManager;
     
     glm::vec3 cameraAnimationChange = glm::vec3(0.0f);
     int selectedEnemy = 0;

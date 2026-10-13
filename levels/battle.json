@@ -107,6 +107,32 @@
                     "textPosition" : [200.0, 200.0, 0.0]
                 },
                 {
+                    "action" : "submenu",
+                    "text" : "Magic",
+                    "fontSize" : 10,
+                    "fontPath" : "/fonts/OpenSans-Bold.ttf",
+                    "fontColor" : [0.0, 0.0, 0.0, 1.0],
+                    "textPosition" : [300.0, 200.0, 0.0],
+                    "menuItems" : [
+                        {
+                            "action" : "fire",
+                            "text" : "Fire",
+                            "fontSize" : 10,
+                            "fontPath" : "/fonts/OpenSans-Bold.ttf",
+                            "fontColor" : [0.0, 0.0, 0.0, 1.0],
+                            "textPosition" : [200.0, 200.0, 0.0]
+                        },
+                        {
+                            "action" : "back",
+                            "text" : "Back",
+                            "fontSize" : 10,
+                            "fontPath" : "/fonts/OpenSans-Bold.ttf",
+                            "fontColor" : [0.0, 0.0, 0.0, 1.0],
+                            "textPosition" : [200.0, 150.0, 0.0]
+                        }
+                    ]
+                },
+                {
                     "action" : "retreat",
                     "text" : "Run",
                     "fontSize" : 10,
