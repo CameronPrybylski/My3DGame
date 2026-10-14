@@ -12,6 +12,7 @@ public:
     virtual void Update(const Input& input, float dt) override;
 
     virtual void TakeDamage(int damage){hp -= damage;}
+    int GetHP(){return hp;}
     bool IsAlive(){return hp > 0;}
     int GetDamageOutput(){return damageOutput;}
     bool IsAttacking(){return attacking;}

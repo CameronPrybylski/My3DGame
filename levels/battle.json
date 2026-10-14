@@ -1,164 +1,224 @@
 {
-    "objects" : 
-    [
+    "levelParams": [
         {
-            "name" : "player",
-            "gltf" : "/res/kingdom_hearts_riku/scene.gltf",
-            "type" : "player",
-            "position" : [650.0, 355.5, 10.0],
-            "scale" : [1.0, 1.0, 1.0],
-            "rotation" : [180.0, 225.0, 0.0],
-            "hitBoxScaleMulti" : [1.0, 1.0, 1.0],
-            "color" : [0.0, 0.0, 0.0, 0.0],
-            "mass" : 10.0,
-            "posOffset" : [0.0, 0.0, 0.0],
-            "isStatic" : false,
-            "hp" : 10,
-            "damageOutput" : 100,
-            "flipYZ" : true
+            "distanceFromPlayer": 1000.0,
+            "maxZ": 6000.0,
+            "minZ": 0.1,
+            "offset": [
+                30.0,
+                15.0,
+                -400.0
+            ],
+            "playerPosition": [
+                650.0,
+                800.0,
+                10.0
+            ],
+            "type": "camera"
         },
         {
-            "name" : "heartless",
-            "gltf" : "/res/heartless/scene.gltf",
-            "type" : "enemy",
-            "position" : [1000.0, 355.3, 0.0],
-            "rotation" : [0.0, 45.0, 0.0],
-            "scale" : [0.6, 0.6, 0.6],
-            "velocity" : [1.0, 0.0, 0.0],
-            "maxDistance" : 1000.0,
-            "direction" : [1.0, 0.0, 0.0],
-            "hitBoxScaleMulti" : [1.0, 1.0, 1.0],
-            "color" : [0.0, 0.0, 0.0, 0.0],
-            "mass" : 10.0,
-            "posOffset" : [0.0, 0.0, 0.0],
-            "isStatic" : false,
-            "hp" : 30,
-            "damageOutput" : 1,
-            "flipYZ" : true
+            "gravity": [
+                0.0,
+                -600.0,
+                0.0
+            ],
+            "type": "gravity"
         },
         {
-            "name" : "heartless2",
-            "gltf" : "/res/heartless/scene.gltf",
-            "type" : "enemy",
-            "position" : [1000.0, 355.3, 300.0],
-            "rotation" : [0.0, 45.0, 0.0],
-            "scale" : [0.6, 0.6, 0.6],
-            "velocity" : [1.0, 0.0, 0.0],
-            "maxDistance" : 1000.0,
-            "direction" : [1.0, 0.0, 0.0],
-            "hitBoxScaleMulti" : [1.0, 1.0, 1.0],
-            "color" : [0.0, 0.0, 0.0, 0.0],
-            "mass" : 10.0,
-            "posOffset" : [0.0, 0.0, 0.0],
-            "isStatic" : false,
-            "hp" : 30,
-            "damageOutput" : 1,
-            "flipYZ" : true
+            "lightPos": [
+                -500.0,
+                2000.0,
+                1000.0
+            ],
+            "type": "lightPos"
+        }
+    ],
+    "objects": [
+        {
+            "color": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "damageOutput": 100,
+            "flipYZ": true,
+            "gltf": "/res/kingdom_hearts_riku/scene.gltf",
+            "hitBoxScaleMulti": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "hp": 10,
+            "isStatic": false,
+            "mass": 10.0,
+            "name": "player",
+            "posOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                650.0,
+                355.5,
+                10.0
+            ],
+            "rotation": [
+                180.0,
+                225.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "type": "player"
         },
         {
-            "name" : "heartless3",
-            "gltf" : "/res/heartless/scene.gltf",
-            "type" : "enemy",
-            "position" : [700.0, 355.3, 300.0],
-            "rotation" : [0.0, 45.0, 0.0],
-            "scale" : [0.6, 0.6, 0.6],
-            "velocity" : [1.0, 0.0, 0.0],
-            "maxDistance" : 1000.0,
-            "direction" : [1.0, 0.0, 0.0],
-            "hitBoxScaleMulti" : [1.0, 1.0, 1.0],
-            "color" : [0.0, 0.0, 0.0, 0.0],
-            "mass" : 10.0,
-            "posOffset" : [0.0, 0.0, 0.0],
-            "isStatic" : false,
-            "hp" : 30,
-            "damageOutput" : 1,
-            "flipYZ" : true
-        },
-        {
-            "name" : "floor",
-            "gltf" : "",
-            "type" : "cube",
-            "position" : [500.0, 350.0, 10.0],
-            "scale" : [30000.0, 10.0, 30000.0],
-            "color" : [0.0, 0.4, 0.7, 1.0],
-            "mass" : 100.0,
-            "posOffset" : [0.0, 0.0, 0.0],
-            "isStatic" : true
-        },
-        {
-            "name" : "menu",
-            "gltf" : "",
-            "type" : "menu",
-            "position" : [533.5, 150.0, 0.0],
-            "rotation" : [0.0, 0.0, 0.0],
-            "textRotation" : [20.0, 30.0, 0.0],
-            "scale" : [900.0, 150.0, 1.0],
-            "color" : [0.2, 0.3, 0.7, 0.5],
-            "mass" : 100.0,
-            "posOffset" : [0.0, 0.0, 0.0],
-            "isStatic" : true,
-            "menuItems" : [
+            "color": [
+                0.2,
+                0.3,
+                0.7,
+                0.5
+            ],
+            "gltf": "",
+            "isStatic": true,
+            "mass": 100.0,
+            "menuItems": [
                 {
-                    "action" : "attack",
-                    "text" : "Attack",
-                    "fontSize" : 10,
-                    "fontPath" : "/fonts/OpenSans-Bold.ttf",
-                    "fontColor" : [0.0, 0.0, 0.0, 1.0],
-                    "textPosition" : [200.0, 200.0, 0.0]
-                },
-                {
-                    "action" : "submenu",
-                    "text" : "Magic",
-                    "fontSize" : 10,
-                    "fontPath" : "/fonts/OpenSans-Bold.ttf",
-                    "fontColor" : [0.0, 0.0, 0.0, 1.0],
-                    "textPosition" : [300.0, 200.0, 0.0],
-                    "menuItems" : [
-                        {
-                            "action" : "fire",
-                            "text" : "Fire",
-                            "fontSize" : 10,
-                            "fontPath" : "/fonts/OpenSans-Bold.ttf",
-                            "fontColor" : [0.0, 0.0, 0.0, 1.0],
-                            "textPosition" : [200.0, 200.0, 0.0]
-                        },
-                        {
-                            "action" : "back",
-                            "text" : "Back",
-                            "fontSize" : 10,
-                            "fontPath" : "/fonts/OpenSans-Bold.ttf",
-                            "fontColor" : [0.0, 0.0, 0.0, 1.0],
-                            "textPosition" : [200.0, 150.0, 0.0]
-                        }
+                    "action": "attack",
+                    "fontColor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "fontPath": "/fonts/OpenSans-Bold.ttf",
+                    "fontSize": 10,
+                    "text": "Attack",
+                    "textPosition": [
+                        200.0,
+                        200.0,
+                        0.0
                     ]
                 },
                 {
-                    "action" : "retreat",
-                    "text" : "Run",
-                    "fontSize" : 10,
-                    "fontPath" : "/fonts/OpenSans-Bold.ttf",
-                    "fontColor" : [0.0, 0.0, 0.0, 1.0],
-                    "textPosition" : [200.0, 150.0, 0.0]
+                    "action": "submenu",
+                    "fontColor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "fontPath": "/fonts/OpenSans-Bold.ttf",
+                    "fontSize": 10,
+                    "menuItems": [
+                        {
+                            "action": "fire",
+                            "fontColor": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "fontPath": "/fonts/OpenSans-Bold.ttf",
+                            "fontSize": 10,
+                            "text": "Fire",
+                            "textPosition": [
+                                200.0,
+                                200.0,
+                                0.0
+                            ]
+                        },
+                        {
+                            "action": "back",
+                            "fontColor": [
+                                0.0,
+                                0.0,
+                                0.0,
+                                1.0
+                            ],
+                            "fontPath": "/fonts/OpenSans-Bold.ttf",
+                            "fontSize": 10,
+                            "text": "Back",
+                            "textPosition": [
+                                200.0,
+                                150.0,
+                                0.0
+                            ]
+                        }
+                    ],
+                    "text": "Magic",
+                    "textPosition": [
+                        300.0,
+                        200.0,
+                        0.0
+                    ]
+                },
+                {
+                    "action": "retreat",
+                    "fontColor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "fontPath": "/fonts/OpenSans-Bold.ttf",
+                    "fontSize": 10,
+                    "text": "Run",
+                    "textPosition": [
+                        200.0,
+                        150.0,
+                        0.0
+                    ]
+                },
+                {
+                    "action": "",
+                    "fontColor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "fontPath": "/fonts/OpenSans-Bold.ttf",
+                    "fontSize": 15,
+                    "id": "HP",
+                    "text": "HP: ",
+                    "textPosition": [
+                        700.0,
+                        200.0,
+                        0.0
+                    ]
                 }
-            ]
-        }
-    ],
-    "levelParams" : [
-        {
-            "type" : "camera",
-            "minZ" : 0.1,
-            "maxZ" : 6000.0,
-            "distanceFromPlayer" : 1000.0,
-            "playerPosition" : [650.0, 800.0, 10.0],
-            "offset" : [30.0, 15.0, -400.0]
-        },
-        {
-            "type" : "gravity",
-            "gravity" : [0.0, -600.0, 0.0]
-        },
-        {
-            "type" : "lightPos",
-            "lightPos" : [-500.0, 2000.0, 1000.0]
+            ],
+            "name": "menu",
+            "posOffset": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "position": [
+                533.5,
+                150.0,
+                0.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                900.0,
+                150.0,
+                1.0
+            ],
+            "textRotation": [
+                20.0,
+                30.0,
+                0.0
+            ],
+            "type": "menu"
         }
     ]
 }
