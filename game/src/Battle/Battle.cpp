@@ -10,7 +10,6 @@
 Battle::Battle(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::string levelJsonPath, std::shared_ptr<MenuManager> menuManager) : Scene(screenWidth, screenHeight), 
     root(root), loadFilePath(loadFilePath), levelJsonPath(levelJsonPath), menuManager(menuManager)
 {
-    Init();
 }
 
 Battle::~Battle()
@@ -28,7 +27,7 @@ void Battle::LoadBattle()
     objectMap.clear();
     enemies.clear();
     introAnimation = true;
-    std::ifstream loadFile(root + loadFilePath);
+    std::ifstream loadFile(root + baseBattle);
     if(!loadFile.is_open())
     {
         std::cerr << "Could not load file: " << root + loadFilePath << std::endl;
@@ -60,7 +59,7 @@ void Battle::LoadBattle()
                     rotation = glm::vec3(object["rotation"][0], object["rotation"][1], object["rotation"][2]);
                 glm::vec3 hitBoxScale = glm::vec3(scale.x * hitBoxScaleMulti.x, scale.y * hitBoxScaleMulti.y, scale.z * hitBoxScaleMulti.z);
                 std::shared_ptr<GameObject> gameObj;
-                if(object["type"] == "player" || object["type"] == "enemy")
+                if(object["type"] == "player")
                 {
                     int hp = object["hp"];
                     int damageOutput = object["damageOutput"];
@@ -68,27 +67,12 @@ void Battle::LoadBattle()
                     std::string gltfPath = root + gltf;
                     objectLoader.LoadGLTF(gltfPath, gltf, object["flipYZ"]);
                     std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes();
-                    if(object["type"] == "player")
-                    {
-                        player = std::make_shared<PlayerInBattle>(name,submeshes,position,scale,color,mass,isStatic, hp, damageOutput);
-                        player->SetTextures(objectLoader.GetTexturesGLTF());
-                        player->transform.rotation = rotation;
-                        player->SetRendPosOffSet(posOffset);
-                        gameObj = player;
-                    }
-                    else if(object["type"] == "enemy")
-                    {
-                        std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(name,submeshes,position,scale,color,mass,isStatic, hp, damageOutput);
-                        enemy->SetTextures(objectLoader.GetTexturesGLTF());
-                        enemy->transform.rotation = rotation;
-                        enemies.push_back(enemy);
-                        gameObj = enemy;
-                    }
-                }
-                else if(object["type"] == "cube")
-                {
-                    std::shared_ptr<Cube> cube = std::make_shared<Cube>(name, position, scale, color, mass, isStatic);
-                    gameObj = cube;
+                    
+                    player = std::make_shared<PlayerInBattle>(name,submeshes,position,scale,color,mass,isStatic, hp, damageOutput);
+                    player->SetTextures(objectLoader.GetTexturesGLTF());
+                    player->transform.rotation = rotation;
+                    player->SetRendPosOffSet(posOffset);
+                    gameObj = player;
                 }
                 else if(object["type"] == "menu")
                 {
@@ -107,7 +91,12 @@ void Battle::LoadBattle()
                         int fontSize = menuItem["fontSize"];
                         glm::vec3 textPosition = glm::vec3(menuItem["textPosition"][0], menuItem["textPosition"][1], menuItem["textPosition"][2]);
                         std::shared_ptr<StringText> textItem = std::make_shared<StringText>(text, textPosition, rotation, fontColor, fontPath, fontSize, glm::vec3(0.0f));
-                        rootMenu->AddMenuItem(textItem, menuItem["action"]);
+                        if(menuItem["action"] == "")
+                        {
+                            rootMenu->AddReadMenuItem(menuItem["id"], textItem);
+                        } else {
+                            rootMenu->AddMenuItem(textItem, menuItem["action"]);
+                        }
                         if(menuItem["action"] == "submenu")
                         {
                             std::string newName = name + std::to_string(rootMenu->GetSubMenuCount() + 1);
@@ -169,11 +158,72 @@ void Battle::LoadBattle()
     }
     camera.Update(player->transform.position, glm::vec3(0.0f,0.0f,0.0f), cameraOffSet.x, cameraOffSet.y, cameraOffSet.z);
     
+    menuManager->GetActiveMenu()->ChangeReadMenuItemText("HP", "HP: " + std::to_string(player->GetHP()));
+    LoadBattleSpecific();
+}
+
+void Battle::LoadBattleSpecific()
+{
+    std::ifstream loadFile(root + loadFilePath);
+    if(!loadFile.is_open())
+    {
+        std::cerr << "Could not load file: " << root + loadFilePath << std::endl;
+        return;
+    }
+
+    nlohmann::json j;
+    loadFile >> j;
+    glm::vec3 cameraOffSet = glm::vec3(0.0f);
+    for(auto entry : j.items())
+    {
+        if(entry.key() == "objects")
+        {
+            for(auto object : entry.value())
+            {
+                std::string name = object["name"];
+                glm::vec3 position = glm::vec3{object["position"][0], object["position"][1], object["position"][2]};
+                glm::vec3 scale = glm::vec3{object["scale"][0], object["scale"][1], object["scale"][2]};
+                glm::vec4 color = glm::vec4{object["color"][0], object["color"][1], object["color"][2], object["color"][3]};
+                bool isStatic = object["isStatic"];
+                float mass = object["mass"];
+                glm::vec3 posOffset = glm::vec3{object["posOffset"][0], object["posOffset"][1], object["posOffset"][2]};
+
+                glm::vec3 hitBoxScaleMulti = glm::vec3(1.0f, 1.0f, 1.0f);
+                glm::vec3 rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+                if(object.contains("hitBoxScaleMulti"))
+                    hitBoxScaleMulti = glm::vec3(object["hitBoxScaleMulti"][0], object["hitBoxScaleMulti"][1], object["hitBoxScaleMulti"][2]);
+                if(object.contains("rotation"))
+                    rotation = glm::vec3(object["rotation"][0], object["rotation"][1], object["rotation"][2]);
+                glm::vec3 hitBoxScale = glm::vec3(scale.x * hitBoxScaleMulti.x, scale.y * hitBoxScaleMulti.y, scale.z * hitBoxScaleMulti.z);
+                std::shared_ptr<GameObject> gameObj;
+                if(object["type"] == "enemy")
+                {
+                    int hp = object["hp"];
+                    int damageOutput = object["damageOutput"];
+                    std::string gltf = object["gltf"];
+                    std::string gltfPath = root + gltf;
+                    objectLoader.LoadGLTF(gltfPath, gltf, object["flipYZ"]);
+                    std::vector<std::shared_ptr<Mesh>> submeshes = objectLoader.GetSubMeshes();
+                    std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(name,submeshes,position,scale,color,mass,isStatic, hp, damageOutput);
+                    enemy->SetTextures(objectLoader.GetTexturesGLTF());
+                    enemy->transform.rotation = rotation;
+                    enemies.push_back(enemy);
+                    gameObj = enemy;
+                }
+                else if(object["type"] == "cube")
+                {
+                    std::shared_ptr<Cube> cube = std::make_shared<Cube>(name, position, scale, color, mass, isStatic);
+                    gameObj = cube;
+                }
+                AddObject(name, gameObj);
+            }
+        }
+    }
     if(!enemies.empty())
     {
         enemies[selectedEnemy]->SetHighLightedColor();
         SelectAttackingEnemy();
-    }    
+    }
 }
 
 void Battle::LoadPhysics(PhysicsSystem &physics)
@@ -242,9 +292,11 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     if(enemies.empty())
     {
         RemoveEnemy();
+        UpdatePlayer();
         EndScene(nextScene);
     }
 
+    menuManager->GetActiveMenu()->ChangeReadMenuItemText("HP", "HP: " + std::to_string(player->GetHP()));
     menuManager->GetActiveMenu()->Update(input, dt);
 
     Scene::OnUpdate(input, physics, dt);
@@ -257,6 +309,7 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     }
     else if(menuManager->GetActiveMenu()->GetMove() == "retreat")
     {
+        UpdatePlayer();
         EndScene(nextScene);
     }
     else if(menuManager->GetActiveMenu()->GetMove() == "submenu")
@@ -279,7 +332,6 @@ void Battle::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     {
         HandleAttackTurn();
     }
-
 }
 
 void Battle::DrawObjects(Renderer &renderer)
@@ -403,4 +455,37 @@ void Battle::RemoveEnemy()
     }
     loadFileOut << std::setw(4) << j;
     loadFileOut.close();
+}
+
+void Battle::UpdatePlayer()
+{
+    std::ifstream base(root + baseBattle);
+    if(!base.is_open())
+    {
+        std::cerr << "Problem opening: " << baseBattle << std::endl;
+    } 
+    nlohmann::json j;
+    base >> j;
+    for(auto& entry : j.items())
+    {
+        if(entry.key() == "objects")
+        {
+            for(auto& object : entry.value())
+            {
+                if(object["type"] == "player")
+                {
+                    object["hp"] = player->GetHP();
+                    break;
+                }
+            }
+        }
+    }
+    base.close();
+    std::ofstream baseOut(root + baseBattle);
+    if(!baseOut.is_open())
+    {
+        std::cerr << "Problem opening: " << baseBattle << std::endl;
+    }
+    baseOut << std::setw(4) << j;
+    baseOut.close();
 }

@@ -11,7 +11,6 @@
 
 Level::Level(float screenWidth, float screenHeight, std::string root, std::string loadFilePath, std::shared_ptr<BattleManager> battleManager) : Scene(screenWidth, screenHeight), root(root), loadFilePath(loadFilePath), battleManager(battleManager)
 {
-    Init();
 }
 
 Level::~Level()

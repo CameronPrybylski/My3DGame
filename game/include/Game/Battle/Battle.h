@@ -27,6 +27,8 @@ public:
     void SetEnemyName(std::string enemyName){this->enemyName = enemyName;}
     void SetLevelJsonPath(std::string levelJsonPath){this->levelJsonPath = levelJsonPath;}
 
+    inline static std::string baseBattle = "";
+
 protected:
     std::string root;
     std::string loadFilePath;
@@ -48,4 +50,7 @@ protected:
     virtual void SelectAttackingEnemy();
 
     virtual void RemoveEnemy();
+
+    void LoadBattleSpecific();
+    void UpdatePlayer();
 };

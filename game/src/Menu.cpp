@@ -24,6 +24,26 @@ void Menu::AddMenuItem(std::shared_ptr<StringText> text, std::string action)
     menuItemsMoves[text] = action;
 }
 
+void Menu::AddReadMenuItem(std::string id, std::shared_ptr<StringText> text)
+{
+    if(readMenuItems.count(id))
+    {
+        std::cerr << "Read Menu Items already contains: " << id << std::endl;
+        return;
+    }
+    readMenuItems[id] = text;
+}
+
+void Menu::ChangeReadMenuItemText(std::string id, std::string newText)
+{
+    if(readMenuItems.count(id))
+    {
+        readMenuItems[id]->ChangeText(newText);
+    } else {
+        std::cerr << "New Read Menu Item with id: " << id << std::endl;
+    }
+}
+
 void Menu::AddSubMenu(std::shared_ptr<StringText> text, std::shared_ptr<Menu> submenu)
 {
     subMenus[text] = submenu;
@@ -80,5 +100,10 @@ void Menu::Render(Renderer &renderer, const Camera& camera)
     for(int i = 0; i < menuItems.size(); ++i)
     {
         menuItems[i]->Render(renderer, camera);
+    }
+    std::map<std::string, std::shared_ptr<StringText>>::iterator itr = readMenuItems.begin();
+    for(; itr != readMenuItems.end(); ++itr)
+    {
+        itr->second->Render(renderer, camera);
     }
 }

@@ -12,6 +12,8 @@ public:
     virtual void Render(Renderer &renderer, const Camera& camera) override;
     
     void AddMenuItem(std::shared_ptr<StringText> text, std::string action);
+    void AddReadMenuItem(std::string id, std::shared_ptr<StringText> text);
+    void ChangeReadMenuItemText(std::string id, std::string newText);
     void AddSubMenu(std::shared_ptr<StringText> text, std::shared_ptr<Menu> submenu);
 
     std::shared_ptr<Menu> GetSubMenu(std::shared_ptr<StringText> text){return subMenus[text];}
@@ -34,6 +36,7 @@ public:
 protected:
     std::vector<std::shared_ptr<StringText>> menuItems;
     std::map<std::shared_ptr<StringText>, std::string> menuItemsMoves;
+    std::map<std::string, std::shared_ptr<StringText>> readMenuItems;
     std::string move = "";
     int selectedText = 0;
     std::map<std::shared_ptr<StringText>, std::shared_ptr<Menu>> subMenus;

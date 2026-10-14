@@ -1,0 +1,73 @@
+{
+    "objects" : 
+    [
+        {
+            "name" : "heartless",
+            "gltf" : "/res/heartless/scene.gltf",
+            "type" : "enemy",
+            "position" : [1000.0, 355.3, 0.0],
+            "rotation" : [0.0, 45.0, 0.0],
+            "scale" : [0.6, 0.6, 0.6],
+            "velocity" : [1.0, 0.0, 0.0],
+            "maxDistance" : 1000.0,
+            "direction" : [1.0, 0.0, 0.0],
+            "hitBoxScaleMulti" : [1.0, 1.0, 1.0],
+            "color" : [0.0, 0.0, 0.0, 0.0],
+            "mass" : 10.0,
+            "posOffset" : [0.0, 0.0, 0.0],
+            "isStatic" : false,
+            "hp" : 30,
+            "damageOutput" : 1,
+            "flipYZ" : true
+        },
+        {
+            "name" : "heartless2",
+            "gltf" : "/res/heartless/scene.gltf",
+            "type" : "enemy",
+            "position" : [1000.0, 355.3, 300.0],
+            "rotation" : [0.0, 45.0, 0.0],
+            "scale" : [0.6, 0.6, 0.6],
+            "velocity" : [1.0, 0.0, 0.0],
+            "maxDistance" : 1000.0,
+            "direction" : [1.0, 0.0, 0.0],
+            "hitBoxScaleMulti" : [1.0, 1.0, 1.0],
+            "color" : [0.0, 0.0, 0.0, 0.0],
+            "mass" : 10.0,
+            "posOffset" : [0.0, 0.0, 0.0],
+            "isStatic" : false,
+            "hp" : 30,
+            "damageOutput" : 1,
+            "flipYZ" : true
+        },
+        {
+            "name" : "heartless3",
+            "gltf" : "/res/heartless/scene.gltf",
+            "type" : "enemy",
+            "position" : [700.0, 355.3, 300.0],
+            "rotation" : [0.0, 45.0, 0.0],
+            "scale" : [0.6, 0.6, 0.6],
+            "velocity" : [1.0, 0.0, 0.0],
+            "maxDistance" : 1000.0,
+            "direction" : [1.0, 0.0, 0.0],
+            "hitBoxScaleMulti" : [1.0, 1.0, 1.0],
+            "color" : [0.0, 0.0, 0.0, 0.0],
+            "mass" : 10.0,
+            "posOffset" : [0.0, 0.0, 0.0],
+            "isStatic" : false,
+            "hp" : 30,
+            "damageOutput" : 1,
+            "flipYZ" : true
+        },
+        {
+            "name" : "floor",
+            "gltf" : "",
+            "type" : "cube",
+            "position" : [500.0, 350.0, 10.0],
+            "scale" : [30000.0, 10.0, 30000.0],
+            "color" : [0.0, 0.4, 0.7, 1.0],
+            "mass" : 100.0,
+            "posOffset" : [0.0, 0.0, 0.0],
+            "isStatic" : true
+        }
+    ]
+}
